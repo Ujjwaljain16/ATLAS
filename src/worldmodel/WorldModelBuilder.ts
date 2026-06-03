@@ -40,7 +40,7 @@ export class WorldModelBuilder {
 
   private classifyFields(form: FormState, obs: Observation): FieldState[] {
     // If implicit global form, we process all inputs without a parentFormId
-    const targetElements = form.formId === 'implicit_global_form' 
+    const targetElements = form.formId === 'implicit_global_context' 
       ? obs.elementInventory.filter(el => !el.parentFormId)
       : obs.elementInventory.filter(el => el.parentFormId === form.formId);
 

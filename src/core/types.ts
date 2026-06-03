@@ -59,6 +59,7 @@ export interface ExecutionResult {
   durationMs: number;
   executionTrace?: string;
   subObjectiveResults?: Record<string, { status: string }>;
+  completedOutcomes?: ActionOutcomeRecord[];
   hardcodedSelectorsUsed?: number;
   recoveryCount?: number;
 }

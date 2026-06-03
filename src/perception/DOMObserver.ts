@@ -156,7 +156,42 @@ const DOM_EXTRACTION_SCRIPT = `
       };
 
       // Extract context elements inside the form
-      const heading = form.querySelector('h1, h2, h3, h4, h5, h6')?.textContent?.trim() || null;
+      let heading = form.querySelector('h1, h2, h3, h4, h5, h6')?.textContent?.trim() || null;
+      if (!heading) {
+        // Look for heading in previous siblings or parent's previous siblings
+        let current = form.previousElementSibling;
+        while (current) {
+          if (current.tagName.match(/^H[1-6]$/)) {
+            heading = current.textContent?.trim() || null;
+            break;
+          }
+          // also check if the sibling contains a heading
+          const innerH = current.querySelector('h1, h2, h3, h4, h5, h6');
+          if (innerH) {
+            heading = innerH.textContent?.trim() || null;
+            break;
+          }
+          current = current.previousElementSibling;
+        }
+        
+        // If still no heading, check parent's previous sibling
+        if (!heading && form.parentElement) {
+          let parentPrev = form.parentElement.previousElementSibling;
+          while (parentPrev) {
+            if (parentPrev.tagName.match(/^H[1-6]$/)) {
+              heading = parentPrev.textContent?.trim() || null;
+              break;
+            }
+            const innerH = parentPrev.querySelector('h1, h2, h3, h4, h5, h6');
+            if (innerH) {
+              heading = innerH.textContent?.trim() || null;
+              break;
+            }
+            parentPrev = parentPrev.previousElementSibling;
+          }
+        }
+      }
+      
       const legend = form.querySelector('legend')?.textContent?.trim() || null;
       const title = form.getAttribute('title') || null;
 

@@ -1,0 +1,16 @@
+id: GOLDEN-002
+name: Duplicate Labels (Shipping vs Billing)
+url: http://localhost:3001/duplicate-labels.html
+goal: Fill out the shipping address
+parameters:
+  Name: "Jane Doe"
+  Address: "123 Shipping Lane"
+expected:
+  success: true
+  activeFormId: shipping_form
+  expectedElements:
+    - shipping_name
+    - shipping_address
+  forbiddenElements:
+    - billing_name
+    - billing_address

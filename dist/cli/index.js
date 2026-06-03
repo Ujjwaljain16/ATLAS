@@ -40,6 +40,7 @@ const yaml = __importStar(require("yaml"));
 const types_1 = require("./types");
 const IntentPlanner_1 = require("./IntentPlanner");
 const index_1 = require("../index");
+const EvalRunner_1 = require("../eval/EvalRunner");
 const zod_1 = require("zod");
 const program = new commander_1.Command();
 program.name('atlas').description('ATLAS Browser Agent CLI');
@@ -171,6 +172,15 @@ program
     console.log('=========================================');
     console.log(JSON.stringify({ runs, successRate: report.successRate + '%', avgRuntimeMs: report.avgRuntimeMs }, null, 2));
     process.exit(successCount === runs ? 0 : 1);
+});
+program
+    .command('eval <directoryOrFile>')
+    .description('Run the ATLAS Eval Harness on a test or directory of tests')
+    .action(async (directoryOrFile) => {
+    const runner = new EvalRunner_1.EvalRunner();
+    const results = await runner.runSuite(directoryOrFile);
+    const allPassed = results.every(r => r.passed);
+    process.exit(allPassed ? 0 : 1);
 });
 program
     .command('replay <session.json>')

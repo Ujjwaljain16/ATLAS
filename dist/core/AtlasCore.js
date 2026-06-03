@@ -145,6 +145,7 @@ class AtlasCore {
             status: isSuccess ? 'SUCCESS' : (this.currentState === types_1.FSMState.FAILED ? 'FAILURE' : 'PARTIAL'),
             steps: this.stepCount,
             durationMs,
+            completedOutcomes: this.goalManager.completedSubObjectives,
         };
     }
     async executeStep() {
@@ -166,7 +167,7 @@ class AtlasCore {
         // PLAN
         this.transition(types_1.FSMState.PLAN);
         const planStart = performance.now();
-        const decision = await this.reasoningEngine.decide(worldState, this.memory, this.goalManager.activeSubObjective);
+        const decision = await this.reasoningEngine.decide(worldState, this.memory, this.goalManager.activeSubObjective, this.goalManager.currentGoal?.label);
         this.timingMetrics.reasoningMs += performance.now() - planStart;
         this.emitEvent({ type: 'DecisionMade', ...decision, action: decision.action.name });
         if (decision.confidence < this.config.reasoning.minConfidenceThreshold) {

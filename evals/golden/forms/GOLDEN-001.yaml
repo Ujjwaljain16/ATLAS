@@ -1,0 +1,17 @@
+id: GOLDEN-001
+name: Simple Contact Form
+url: http://localhost:3001/simple-form.html
+goal: Fill out the contact form
+parameters:
+  Name: "Atlas Test"
+  Email: "test@atlas.com"
+  Message: "Hello this is a test"
+expected:
+  success: true
+  formSelectionAccuracy: 1.0
+  activeFormId: form_contact_form
+  expectedElements:
+    - name
+    - email
+    - message
+  forbiddenElements: []

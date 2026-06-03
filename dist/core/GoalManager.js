@@ -15,6 +15,9 @@ class GoalManager {
     get lastCompletedSubObjective() {
         return this._lastCompletedSubObjective;
     }
+    get currentGoal() {
+        return this.goal;
+    }
     load(goal) {
         this.goal = goal;
         this.currentSubObjectiveIndex = 0;

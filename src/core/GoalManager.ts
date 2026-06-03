@@ -17,6 +17,10 @@ export class GoalManager {
     return this._lastCompletedSubObjective;
   }
 
+  get currentGoal(): import('./types').Goal | null {
+    return this.goal;
+  }
+
   load(goal: Goal) {
     this.goal = goal;
     this.currentSubObjectiveIndex = 0;

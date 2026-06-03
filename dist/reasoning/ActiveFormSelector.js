@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActiveFormSelector = void 0;
 class ActiveFormSelector {
-    rankForms(forms, activeSubObjective) {
+    rankForms(forms, activeSubObjective, goalLabel) {
         if (!forms || forms.length === 0)
             return [];
         // If there's only one form (or just the implicit global form), no ranking needed.
@@ -14,57 +14,46 @@ class ActiveFormSelector {
                     formState: forms[0]
                 }];
         }
-        const goalStr = activeSubObjective.targetFieldDescription.toLowerCase() + " " + activeSubObjective.label.toLowerCase();
+        const goalStr = (goalLabel || '').toLowerCase();
+        const subObjStr = activeSubObjective.label.toLowerCase();
         const candidates = forms.map(form => {
             let score = 0;
             let reason = 'No Relevant Matches';
             const meta = form.metadata;
-            const checkExactMatch = (val) => val && val.toLowerCase() === goalStr;
-            const checkPartialMatch = (val) => val && val.toLowerCase().includes(goalStr);
-            if (checkExactMatch(meta.id)) {
-                score += 1.0;
-                reason = 'Exact ID Match';
-            }
-            else if (checkExactMatch(meta.legend)) {
-                score += 0.95;
-                reason = 'Exact Legend Match';
-            }
-            else if (checkExactMatch(meta.heading)) {
-                score += 0.95;
-                reason = 'Exact Heading Match';
-            }
-            else if (checkExactMatch(meta.ariaLabel)) {
-                score += 0.90;
-                reason = 'Exact Aria Label Match';
-            }
-            else if (checkPartialMatch(meta.heading)) {
-                score += 0.75;
-                reason = 'Partial Heading Match';
-            }
-            else if (checkPartialMatch(meta.legend)) {
-                score += 0.75;
-                reason = 'Partial Legend Match';
-            }
-            else if (checkPartialMatch(meta.ariaLabel)) {
-                score += 0.70;
-                reason = 'Partial Aria Label Match';
-            }
-            // Fallback: Semantic Field Label Overlap
-            if (score === 0) {
-                let fieldMatchCount = 0;
-                const keywords = goalStr.split(' ');
-                for (const field of form.fields) {
-                    if (field.label) {
-                        const lbl = field.label.toLowerCase();
-                        if (keywords.some((k) => lbl.includes(k))) {
-                            fieldMatchCount++;
-                        }
+            const formText = [meta.id, meta.heading, meta.legend, meta.ariaLabel].filter(Boolean).join(' ').toLowerCase();
+            // 1. Check if the overall goal matches the form's metadata (e.g. "Profile" in "Fill my profile form")
+            let goalMatchCount = 0;
+            if (goalStr) {
+                const goalWords = goalStr.split(' ').filter((w) => w.length > 3); // ignore small words
+                for (const w of goalWords) {
+                    if (formText.includes(w)) {
+                        goalMatchCount++;
                     }
                 }
-                if (fieldMatchCount > 0) {
-                    score += Math.min(0.60, fieldMatchCount * 0.15);
-                    reason = `Field Label Overlap (${fieldMatchCount} matches)`;
+            }
+            if (goalMatchCount > 0) {
+                score += Math.min(0.80, goalMatchCount * 0.40);
+                reason = `Goal Semantic Match (${goalMatchCount} words)`;
+            }
+            // 2. Check if the sub-objective matches the form's metadata (e.g. "Payment" sub-objective for a Payment form)
+            if (formText.includes(subObjStr)) {
+                score += 0.50;
+                reason = reason === 'No Relevant Matches' ? 'SubObjective Context Match' : reason + ' + SubObjective Match';
+            }
+            // 3. Fallback / Boost: Semantic Field Label Overlap (does this form have fields that match the sub-objective?)
+            let fieldMatchCount = 0;
+            const keywords = subObjStr.split(' ');
+            for (const field of form.fields) {
+                if (field.label) {
+                    const lbl = field.label.toLowerCase();
+                    if (keywords.some((k) => lbl.includes(k))) {
+                        fieldMatchCount++;
+                    }
                 }
+            }
+            if (fieldMatchCount > 0) {
+                score += Math.min(0.40, fieldMatchCount * 0.20);
+                reason = score > fieldMatchCount * 0.20 ? reason + ` + Field Overlap` : `Field Label Overlap (${fieldMatchCount} matches)`;
             }
             return { formId: form.formId, score, reason, formState: form };
         });

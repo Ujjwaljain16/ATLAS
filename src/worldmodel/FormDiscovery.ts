@@ -20,9 +20,9 @@ export class FormDiscovery {
     
     if (hasOrphans || forms.length === 0) {
       forms.push({
-        formId: 'implicit_global_form',
+        formId: 'implicit_global_context',
         metadata: {
-          id: 'implicit_global_form',
+          id: 'implicit_global_context',
           name: null,
           ariaLabel: null,
           title: null,

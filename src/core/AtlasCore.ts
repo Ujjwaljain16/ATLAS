@@ -159,6 +159,7 @@ export class AtlasCore {
       status: isSuccess ? 'SUCCESS' : (this.currentState === FSMState.FAILED ? 'FAILURE' : 'PARTIAL'),
       steps: this.stepCount,
       durationMs,
+      completedOutcomes: this.goalManager.completedSubObjectives,
     };
   }
   
@@ -187,7 +188,12 @@ export class AtlasCore {
     // PLAN
     this.transition(FSMState.PLAN);
     const planStart = performance.now();
-    const decision = await this.reasoningEngine.decide(worldState, this.memory, this.goalManager.activeSubObjective);
+    const decision = await this.reasoningEngine.decide(
+      worldState, 
+      this.memory, 
+      this.goalManager.activeSubObjective,
+      this.goalManager.currentGoal?.label
+    );
     this.timingMetrics.reasoningMs += performance.now() - planStart;
     this.emitEvent({ type: 'DecisionMade', ...decision, action: decision.action.name });
     

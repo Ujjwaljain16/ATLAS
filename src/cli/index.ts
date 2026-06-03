@@ -5,6 +5,7 @@ import * as yaml from 'yaml';
 import { TaskInputSchema, TaskInput } from './types';
 import { IntentPlanner } from './IntentPlanner';
 import { runAgent } from '../index';
+import { EvalRunner } from '../eval/EvalRunner';
 import { z } from 'zod';
 
 const program = new Command();
@@ -149,6 +150,16 @@ program
     console.log('=========================================');
     console.log(JSON.stringify({ runs, successRate: report.successRate + '%', avgRuntimeMs: report.avgRuntimeMs }, null, 2));
     process.exit(successCount === runs ? 0 : 1);
+  });
+
+program
+  .command('eval <directoryOrFile>')
+  .description('Run the ATLAS Eval Harness on a test or directory of tests')
+  .action(async (directoryOrFile) => {
+    const runner = new EvalRunner();
+    const results = await runner.runSuite(directoryOrFile);
+    const allPassed = results.every(r => r.passed);
+    process.exit(allPassed ? 0 : 1);
   });
 
 program

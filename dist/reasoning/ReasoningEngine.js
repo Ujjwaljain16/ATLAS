@@ -12,11 +12,11 @@ class ReasoningEngine {
     constructor(elementDiscovery) {
         this.elementDiscovery = elementDiscovery;
     }
-    async decide(worldState, memory, activeSubObjective) {
+    async decide(worldState, memory, activeSubObjective, goalLabel) {
         // 1. Resolve Intent
         const targetLabel = this.intentResolver.resolve(activeSubObjective);
         // 2. Active Form Selection
-        const formCandidates = this.formSelector.rankForms(worldState.forms, activeSubObjective);
+        const formCandidates = this.formSelector.rankForms(worldState.forms, activeSubObjective, goalLabel);
         const activeForm = formCandidates.length > 0 ? formCandidates[0].formState : null;
         // 3. Element Discovery
         // Only use fields from the active form (prevents cross-form bleed)

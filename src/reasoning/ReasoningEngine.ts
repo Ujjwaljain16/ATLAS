@@ -12,12 +12,12 @@ export class ReasoningEngine {
 
   constructor(private elementDiscovery: ElementDiscovery) {}
 
-  async decide(worldState: WorldState, memory: any, activeSubObjective: SubObjective) {
+  async decide(worldState: WorldState, memory: any, activeSubObjective: SubObjective, goalLabel?: string) {
     // 1. Resolve Intent
     const targetLabel = this.intentResolver.resolve(activeSubObjective);
 
     // 2. Active Form Selection
-    const formCandidates = this.formSelector.rankForms(worldState.forms, activeSubObjective);
+    const formCandidates = this.formSelector.rankForms(worldState.forms, activeSubObjective, goalLabel);
     const activeForm = formCandidates.length > 0 ? formCandidates[0].formState : null;
     
     // 3. Element Discovery

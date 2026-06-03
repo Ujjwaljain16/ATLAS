@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────
+#  ATLAS — .gitignore
+# ─────────────────────────────────────────
+
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# TypeScript incremental compilation info
+*.tsbuildinfo
+
+# Environment — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Runtime outputs (generated per execution)
+execution_trace.txt
+screenshots/
+ATLAS_EVAL_REPORT.md
+
+# Playwright browser binaries (installed via npx playwright install)
+.playwright/
+
+# Benchmark history — keep the repo clean; these are local metrics
+# If you want to track history in git, comment this out
+benchmark-history/
+
+# Logs
+*.log
+logs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor artifacts
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Scratch files
+scratch.ts
+scratch/
