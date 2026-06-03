@@ -3,7 +3,7 @@ import { BrowserController } from '../browser/BrowserController';
 
 // Stubs for Phase 11/12
 export interface TraceBuilder {
-  generateReport(result?: any): void;
+  generateReport(result?: any, metrics?: any, verbose?: boolean): string | void;
 }
 export interface ReplayLog {
   flush(): Promise<void>;

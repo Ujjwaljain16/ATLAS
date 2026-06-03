@@ -68,6 +68,7 @@ program
   .command('run <file>')
   .description('Run the ATLAS agent against a task definition')
   .option('--headless <boolean>', 'Run browser in headless mode', 'true')
+  .option('--verbose', 'Enable verbose execution tracing', false)
   .action(async (file, options) => {
     const input = parseTaskFile(file);
     const planner = new IntentPlanner();
@@ -75,14 +76,17 @@ program
     
     console.log(`Executing Goal: ${goal.label}`);
     const headless = options.headless === 'true' || options.headless === true;
+    const verbose = options.verbose === true || options.verbose === 'true';
     console.log(`[DEBUG] headless parsed as: ${headless} (from options.headless: ${options.headless})`);
     
-    const { result, metrics } = await runAgent(goal, undefined, headless);
+    const { result, metrics } = await runAgent(goal, undefined, headless, verbose);
     
-    console.log('\n════════════════════════════════════════════════════════════════');
-    console.log(' ATLAS Run Summary');
-    console.log('════════════════════════════════════════════════════════════════');
-    console.log(JSON.stringify(metrics, null, 2));
+    if (verbose) {
+      console.log('\n════════════════════════════════════════════════════════════════');
+      console.log(' ATLAS Run Summary (JSON)');
+      console.log('════════════════════════════════════════════════════════════════');
+      console.log(JSON.stringify(metrics, null, 2));
+    }
     
     process.exit(result.status === 'SUCCESS' ? 0 : 1);
   });

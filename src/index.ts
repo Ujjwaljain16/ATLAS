@@ -15,7 +15,7 @@ import { ResilienceEngine } from './resilience/ResilienceEngine';
 
 import { Goal } from './core/types';
 
-export async function runAgent(goal: Goal, customSessionId?: string, headless = true) {
+export async function runAgent(goal: Goal, customSessionId?: string, headless = true, verbose = false) {
   const config = ATLASConfigLoader.load();
   config.browser.headless = headless;
   
@@ -83,11 +83,12 @@ export async function runAgent(goal: Goal, customSessionId?: string, headless = 
   
   const result = await atlas.run(goal);
   
-  console.log('\n' + traceBuilder.generateReport(result as any));
+  const finalMetrics = metrics.generateReport();
+  console.log('\n' + traceBuilder.generateReport(result as any, finalMetrics, verbose));
   
   return {
     result,
-    metrics: metrics.generateReport()
+    metrics: finalMetrics
   };
 }
 
