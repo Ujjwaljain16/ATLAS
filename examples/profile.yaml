@@ -1,0 +1,5 @@
+goal: Fill my profile form
+url: https://ui.shadcn.com/docs/forms/react-hook-form
+parameters:
+  Name: John Doe
+  Description: Backend Engineer

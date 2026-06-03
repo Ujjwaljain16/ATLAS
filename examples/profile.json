@@ -1,0 +1,18 @@
+{
+  "goal": "Complete the complex checkout form to validate semantic discovery",
+  "url": "https://getbootstrap.com/docs/5.3/examples/checkout/",
+  "parameters": {
+    "First name": "Atlas",
+    "Last name": "Agent",
+    "Username": "atlas_autonomous",
+    "Email": "agent@atlas-framework.dev",
+    "Address": "123 Neural Network Blvd",
+    "Country": "United States",
+    "State": "California",
+    "Zip": "94025",
+    "Name on card": "ATLAS AGENT",
+    "Credit card number": "4111222233334444",
+    "Expiration": "12/29",
+    "CVV": "123"
+  }
+}

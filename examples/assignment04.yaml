@@ -1,0 +1,5 @@
+goal: Fill my profile form
+url: https://ui.shadcn.com/docs/forms/react-hook-form
+parameters:
+  Username: ATLAS_Agent
+  Description: I am an autonomous web automation framework executing Assignment 04.
