@@ -99,29 +99,7 @@ const DOM_EXTRACTION_SCRIPT = `
       const parentForm = el.closest('form');
       let parentFormId = null;
       if (parentForm) {
-        parentFormId = parentForm.getAttribute('id');
-        if (!parentFormId) {
-          let path = [];
-          let current = parentForm;
-          while (current && current.nodeType === Node.ELEMENT_NODE) {
-            let sel = current.nodeName.toLowerCase();
-            if (current.id) {
-              sel += '#' + CSS.escape(current.id);
-              path.unshift(sel);
-              break;
-            } else {
-              let sibling = current;
-              let nth = 1;
-              while (sibling = sibling.previousElementSibling) {
-                if (sibling.nodeName.toLowerCase() == sel) nth++;
-              }
-              if (nth !== 1) { sel += \`:nth-of-type(\${nth})\`; }
-            }
-            path.unshift(sel);
-            current = current.parentNode;
-          }
-          parentFormId = \`form_\${path.join(' > ')}\`;
-        }
+        parentFormId = parentForm.getAttribute('id') || \`form_\${generateSelector(parentForm)}\`;
       }
       
       return {

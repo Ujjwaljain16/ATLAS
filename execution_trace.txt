@@ -1,47 +1,107 @@
 ════════════════════════════════════════════════════════════════
  ATLAS VERBOSE EXECUTION TRACE
- Session:   atlas_sess_demo_1780449972672
- Goal:      Fill my profile form
+ Session:   atlas_sess_demo_1780450163250
+ Goal:      Complete the complex checkout form to validate semantic discovery
 ════════════════════════════════════════════════════════════════
 
-STEP 01 ─ FILL USERNAME FIELD
+STEP 01 ─ FILL FIRST NAME FIELD
 
 Form Discovery
-Found 10 forms
+Found 3 forms
 
 Candidates
-1. form-rhf-input       0.15
-   Reason: Field Label Overlap (1 matches)
+1. Payment              0.60
+   Reason: Field Label Overlap (4 matches)
 
-2. form-rhf-demo        0.00
+2. Unnamed Form         0.00
    Reason: No Relevant Matches
 
-3. form-rhf-textarea    0.00
-   Reason: No Relevant Matches
-
-4. form-rhf-select      0.00
-   Reason: No Relevant Matches
-
-5. Responses            0.00
-   Reason: No Relevant Matches
-
-6. Plan                 0.00
-   Reason: No Relevant Matches
-
-7. form-rhf-switch      0.00
-   Reason: No Relevant Matches
-
-8. Subscription Plan    0.00
-   Reason: No Relevant Matches
-
-9. Email Addresses      0.00
-   Reason: No Relevant Matches
-
-10. implicit_global_form 0.00
+3. implicit_global_form 0.00
    Reason: No Relevant Matches
 
 Selected Form
-form-rhf-input
+Payment
+
+Field Decision
+✓ First name
+
+Confidence
+1.00 | Tier 2 | label_text: 'First name'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• First name             ██████████ 1.00
+
+Reasoning
+Requested: Fill First name field
+Selected:  First name
+Why:       label_text: 'First name'
+
+────────────────────────────────────────────────────────────────
+
+STEP 02 ─ FILL LAST NAME FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.60
+   Reason: Field Label Overlap (4 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ Last name
+
+Confidence
+1.00 | Tier 2 | label_text: 'Last name'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• Last name              ██████████ 1.00
+• First name             █████░░░░░ 0.50
+
+Reasoning
+Requested: Fill Last name field
+Selected:  Last name
+Why:       label_text: 'Last name'
+
+────────────────────────────────────────────────────────────────
+
+STEP 03 ─ FILL USERNAME FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.15
+   Reason: Field Label Overlap (1 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
 
 Field Decision
 ✓ Username
@@ -57,6 +117,7 @@ SUCCESS
 
 Alternatives
 • Username               ██████████ 1.00
+• First name             █████░░░░░ 0.50
 
 Reasoning
 Requested: Fill Username field
@@ -65,50 +126,29 @@ Why:       label_text: 'Username'
 
 ────────────────────────────────────────────────────────────────
 
-STEP 02 ─ FILL DESCRIPTION FIELD
+STEP 04 ─ FILL EMAIL FIELD
 
 Form Discovery
-Found 10 forms
+Found 3 forms
 
 Candidates
-1. form-rhf-demo        0.15
+1. Payment              0.15
    Reason: Field Label Overlap (1 matches)
 
-2. form-rhf-input       0.00
+2. Unnamed Form         0.00
    Reason: No Relevant Matches
 
-3. form-rhf-textarea    0.00
-   Reason: No Relevant Matches
-
-4. form-rhf-select      0.00
-   Reason: No Relevant Matches
-
-5. Responses            0.00
-   Reason: No Relevant Matches
-
-6. Plan                 0.00
-   Reason: No Relevant Matches
-
-7. form-rhf-switch      0.00
-   Reason: No Relevant Matches
-
-8. Subscription Plan    0.00
-   Reason: No Relevant Matches
-
-9. Email Addresses      0.00
-   Reason: No Relevant Matches
-
-10. implicit_global_form 0.00
+3. implicit_global_form 0.00
    Reason: No Relevant Matches
 
 Selected Form
-form-rhf-demo
+Payment
 
 Field Decision
-✓ Description
+✓ Email (Optional)
 
 Confidence
-1.00 | Tier 2 | label_text: 'Description'
+0.81 | Tier 3 | partial_label: 'Email (Optional)'
 
 Action
 send_keys
@@ -117,12 +157,348 @@ Result
 SUCCESS
 
 Alternatives
-• Description            ██████████ 1.00
-• Bug Title              ████░░░░░░ 0.41
+• Email (Optional)       ████████░░ 0.81
+• First name             █████░░░░░ 0.50
 
 Reasoning
-Requested: Fill Description field
-Selected:  Description
-Why:       label_text: 'Description'
+Requested: Fill Email field
+Selected:  Email (Optional)
+Why:       partial_label: 'Email (Optional)'
+
+────────────────────────────────────────────────────────────────
+
+STEP 05 ─ FILL ADDRESS FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.45
+   Reason: Field Label Overlap (3 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ Address
+
+Confidence
+1.00 | Tier 2 | label_text: 'Address'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• Address                ██████████ 1.00
+• Address 2 (Optional)   ████████░░ 0.81
+• Shipping address is    █████░░░░░ 0.51
+
+Reasoning
+Requested: Fill Address field
+Selected:  Address
+Why:       label_text: 'Address'
+
+────────────────────────────────────────────────────────────────
+
+STEP 06 ─ FILL COUNTRY FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.15
+   Reason: Field Label Overlap (1 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ Country
+
+Confidence
+1.00 | Tier 2 | label_text: 'Country'
+
+Action
+select_option
+
+Result
+SUCCESS
+
+Alternatives
+• Country                ██████████ 1.00
+• First name             █████░░░░░ 0.50
+• Address 2 (Optional)   ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill Country field
+Selected:  Country
+Why:       label_text: 'Country'
+
+────────────────────────────────────────────────────────────────
+
+STEP 07 ─ FILL STATE FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.15
+   Reason: Field Label Overlap (1 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ State
+
+Confidence
+1.00 | Tier 2 | label_text: 'State'
+
+Action
+select_option
+
+Result
+SUCCESS
+
+Alternatives
+• State                  ██████████ 1.00
+• First name             █████░░░░░ 0.50
+• Address 2 (Optional)   ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill State field
+Selected:  State
+Why:       label_text: 'State'
+
+────────────────────────────────────────────────────────────────
+
+STEP 08 ─ FILL ZIP FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.15
+   Reason: Field Label Overlap (1 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ Zip
+
+Confidence
+1.00 | Tier 2 | label_text: 'Zip'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• Zip                    ██████████ 1.00
+• First name             █████░░░░░ 0.50
+• Address 2 (Optional)   ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill Zip field
+Selected:  Zip
+Why:       label_text: 'Zip'
+
+────────────────────────────────────────────────────────────────
+
+STEP 09 ─ FILL NAME ON CARD FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.60
+   Reason: Field Label Overlap (11 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ Name on card
+
+Confidence
+1.00 | Tier 2 | label_text: 'Name on card'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• Name on card           ██████████ 1.00
+• First name             █████░░░░░ 0.50
+• Address 2 (Optional)   ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill Name on card field
+Selected:  Name on card
+Why:       label_text: 'Name on card'
+
+────────────────────────────────────────────────────────────────
+
+STEP 10 ─ FILL CREDIT CARD NUMBER FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.60
+   Reason: Field Label Overlap (4 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ Credit card number
+
+Confidence
+1.00 | Tier 2 | label_text: 'Credit card number'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• Credit card number     ██████████ 1.00
+• First name             █████░░░░░ 0.50
+• Address 2 (Optional)   ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill Credit card number field
+Selected:  Credit card number
+Why:       label_text: 'Credit card number'
+
+────────────────────────────────────────────────────────────────
+
+STEP 11 ─ FILL EXPIRATION FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.15
+   Reason: Field Label Overlap (1 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ Expiration
+
+Confidence
+1.00 | Tier 2 | label_text: 'Expiration'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• Expiration             ██████████ 1.00
+• First name             █████░░░░░ 0.50
+• Address 2 (Optional)   ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill Expiration field
+Selected:  Expiration
+Why:       label_text: 'Expiration'
+
+────────────────────────────────────────────────────────────────
+
+STEP 12 ─ FILL CVV FIELD
+
+Form Discovery
+Found 3 forms
+
+Candidates
+1. Payment              0.15
+   Reason: Field Label Overlap (1 matches)
+
+2. Unnamed Form         0.00
+   Reason: No Relevant Matches
+
+3. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+Payment
+
+Field Decision
+✓ CVV
+
+Confidence
+1.00 | Tier 2 | label_text: 'CVV'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• CVV                    ██████████ 1.00
+• First name             █████░░░░░ 0.50
+• Address 2 (Optional)   ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill CVV field
+Selected:  CVV
+Why:       label_text: 'CVV'
 
 ────────────────────────────────────────────────────────────────
