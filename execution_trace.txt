@@ -1,170 +1,128 @@
 ════════════════════════════════════════════════════════════════
- ATLAS EXECUTION TRACE
- Session:   atlas_sess_demo_1780448985778
- Goal:      Complete the complex checkout form to validate semantic discovery
- Started:   2026-06-03T01:09:45.779Z
- Ended:     2026-06-03T01:10:40.136Z
- Result:    SUCCESS  ✓
- Duration:  54355 ms  |  Steps: 12
+ ATLAS VERBOSE EXECUTION TRACE
+ Session:   atlas_sess_demo_1780449972672
+ Goal:      Fill my profile form
 ════════════════════════════════════════════════════════════════
 
-Step 1  [Fill First name field]
-  Target:     First name
-  Internal:   #firstName
-  Confidence: 1.00
+STEP 01 ─ FILL USERNAME FIELD
 
-  Alternatives Considered:
-  1. First name                1.00
-  2. e31a63c6-55f4-4482-a7c4-e 0.45
+Form Discovery
+Found 10 forms
 
-  Decision:   Selected Candidate #1 (label_text: 'First name')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 2  [Fill Last name field]
-  Target:     Last name
-  Internal:   #lastName
-  Confidence: 1.00
+Candidates
+1. form-rhf-input       0.15
+   Reason: Field Label Overlap (1 matches)
 
-  Alternatives Considered:
-  1. Last name                 1.00
-  2. 3a9812de-9417-4ae0-b506-0 0.45
+2. form-rhf-demo        0.00
+   Reason: No Relevant Matches
 
-  Decision:   Selected Candidate #1 (label_text: 'Last name')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 3  [Fill Username field]
-  Target:     Username
-  Internal:   #username
-  Confidence: 1.00
+3. form-rhf-textarea    0.00
+   Reason: No Relevant Matches
 
-  Alternatives Considered:
-  1. Username                  1.00
-  2. d736ed24-2c4a-4c4f-95cf-8 0.45
+4. form-rhf-select      0.00
+   Reason: No Relevant Matches
 
-  Decision:   Selected Candidate #1 (label_text: 'Username')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 4  [Fill Email field]
-  Target:     Email (Optional)
-  Internal:   #email
-  Confidence: 0.76
+5. Responses            0.00
+   Reason: No Relevant Matches
 
-  Alternatives Considered:
-  1. Email (Optional)          0.76
-  2. 25bb4939-2a45-4f6e-b151-9 0.45
+6. Plan                 0.00
+   Reason: No Relevant Matches
 
-  Decision:   Selected Candidate #1 (partial_label: 'Email (Optional)')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 5  [Fill Address field]
-  Target:     Address
-  Internal:   #address
-  Confidence: 1.00
+7. form-rhf-switch      0.00
+   Reason: No Relevant Matches
 
-  Alternatives Considered:
-  1. Address                   1.00
-  2. Address 2 (Optional)      0.76
-  3. Shipping address is the s 0.46
+8. Subscription Plan    0.00
+   Reason: No Relevant Matches
 
-  Decision:   Selected Candidate #1 (label_text: 'Address')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 6  [Fill Country field]
-  Target:     Country
-  Internal:   #country
-  Confidence: 1.00
+9. Email Addresses      0.00
+   Reason: No Relevant Matches
 
-  Alternatives Considered:
-  1. Country                   1.00
-  2. 5930d9f7-5007-4f29-b1ef-3 0.45
+10. implicit_global_form 0.00
+   Reason: No Relevant Matches
 
-  Decision:   Selected Candidate #1 (label_text: 'Country')
-  Action:     select_option
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 7  [Fill State field]
-  Target:     State
-  Internal:   #state
-  Confidence: 1.00
+Selected Form
+form-rhf-input
 
-  Alternatives Considered:
-  1. State                     1.00
-  2. 750a4f4e-7be5-4b8a-b772-0 0.45
+Field Decision
+✓ Username
 
-  Decision:   Selected Candidate #1 (label_text: 'State')
-  Action:     select_option
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 8  [Fill Zip field]
-  Target:     Zip
-  Internal:   #zip
-  Confidence: 1.00
+Confidence
+1.00 | Tier 2 | label_text: 'Username'
 
-  Alternatives Considered:
-  1. Zip                       1.00
-  2. b735a3bb-c465-426e-966e-d 0.45
+Action
+send_keys
 
-  Decision:   Selected Candidate #1 (label_text: 'Zip')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 9  [Fill Name on card field]
-  Target:     Name on card
-  Internal:   #cc-name
-  Confidence: 1.00
+Result
+SUCCESS
 
-  Alternatives Considered:
-  1. Name on card              1.00
-  2. 61e392de-bffc-470e-8221-a 0.45
+Alternatives
+• Username               ██████████ 1.00
 
-  Decision:   Selected Candidate #1 (label_text: 'Name on card')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 10  [Fill Credit card number field]
-  Target:     Credit card number
-  Internal:   #cc-number
-  Confidence: 1.00
+Reasoning
+Requested: Fill Username field
+Selected:  Username
+Why:       label_text: 'Username'
 
-  Alternatives Considered:
-  1. Credit card number        1.00
-  2. 7bbf1abd-adf0-41bd-b0df-f 0.45
+────────────────────────────────────────────────────────────────
 
-  Decision:   Selected Candidate #1 (label_text: 'Credit card number')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 11  [Fill Expiration field]
-  Target:     Expiration
-  Internal:   #cc-expiration
-  Confidence: 1.00
+STEP 02 ─ FILL DESCRIPTION FIELD
 
-  Alternatives Considered:
-  1. Expiration                1.00
-  2. a3f1e9d2-2ef8-4095-bb7e-a 0.45
+Form Discovery
+Found 10 forms
 
-  Decision:   Selected Candidate #1 (label_text: 'Expiration')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
-Step 12  [Fill CVV field]
-  Target:     CVV
-  Internal:   #cc-cvv
-  Confidence: 1.00
+Candidates
+1. form-rhf-demo        0.15
+   Reason: Field Label Overlap (1 matches)
 
-  Alternatives Considered:
-  1. CVV                       1.00
-  2. b8390a99-1f5a-4183-aaf6-2 0.45
+2. form-rhf-input       0.00
+   Reason: No Relevant Matches
 
-  Decision:   Selected Candidate #1 (label_text: 'CVV')
-  Action:     send_keys
-  Result:     SUCCESS
-  ───────────────────────────────────────────────────────
+3. form-rhf-textarea    0.00
+   Reason: No Relevant Matches
 
- ALL SUB-OBJECTIVES COMPLETE
-════════════════════════════════════════════════════════════════
+4. form-rhf-select      0.00
+   Reason: No Relevant Matches
+
+5. Responses            0.00
+   Reason: No Relevant Matches
+
+6. Plan                 0.00
+   Reason: No Relevant Matches
+
+7. form-rhf-switch      0.00
+   Reason: No Relevant Matches
+
+8. Subscription Plan    0.00
+   Reason: No Relevant Matches
+
+9. Email Addresses      0.00
+   Reason: No Relevant Matches
+
+10. implicit_global_form 0.00
+   Reason: No Relevant Matches
+
+Selected Form
+form-rhf-demo
+
+Field Decision
+✓ Description
+
+Confidence
+1.00 | Tier 2 | label_text: 'Description'
+
+Action
+send_keys
+
+Result
+SUCCESS
+
+Alternatives
+• Description            ██████████ 1.00
+• Bug Title              ████░░░░░░ 0.41
+
+Reasoning
+Requested: Fill Description field
+Selected:  Description
+Why:       label_text: 'Description'
+
+────────────────────────────────────────────────────────────────

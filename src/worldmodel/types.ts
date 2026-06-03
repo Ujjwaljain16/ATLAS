@@ -1,4 +1,4 @@
-import { FieldStatus } from '../shared/types';
+import { FieldStatus, FormMetadata } from '../shared/types';
 import { PageMetadata } from '../perception/types';
 
 export interface FieldState {
@@ -19,6 +19,7 @@ export interface FieldState {
 
 export interface FormState {
   formId: string;
+  metadata: FormMetadata;
   fields: FieldState[];
 }
 

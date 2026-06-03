@@ -32,7 +32,24 @@ export class ExecutionTraceBuilder {
       
       vLines.push(`STEP ${(step.step || 0).toString().padStart(2, '0')} ─ ${stepTitle}`);
       vLines.push('');
-      vLines.push(`Decision\n✓ ${targetStr}\n`);
+      
+      // --- FORM DISCOVERY ---
+      if (step.formCandidates && step.formCandidates.length > 0) {
+        vLines.push(`Form Discovery\nFound ${step.formCandidates.length} forms\n`);
+        if (step.formCandidates.length > 1) {
+          vLines.push(`Candidates`);
+          step.formCandidates.forEach((fc: any, idx: number) => {
+            const formName = fc.formState.metadata.heading || fc.formState.metadata.legend || fc.formState.metadata.id || 'Unnamed Form';
+            vLines.push(`${idx + 1}. ${formName.substring(0, 20).padEnd(20)} ${fc.score.toFixed(2)}`);
+            vLines.push(`   Reason: ${fc.reason}\n`);
+          });
+        }
+        const activeFormName = step.formCandidates[0].formState.metadata.heading || step.formCandidates[0].formState.metadata.legend || step.formCandidates[0].formState.metadata.id || 'Unnamed Form';
+        vLines.push(`Selected Form\n${activeFormName}\n`);
+      }
+      
+      // --- ELEMENT DECISION ---
+      vLines.push(`Field Decision\n✓ ${targetStr}\n`);
       
       if (step.confidence) {
         totalConfidence += step.confidence;

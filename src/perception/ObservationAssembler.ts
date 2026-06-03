@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { ElementRecord } from '../shared/types';
+import { ElementRecord, FormMetadata } from '../shared/types';
 import { A11yRecord, Observation, PageMetadata } from './types';
 import { A11yObserver } from './A11yObserver';
 
@@ -8,6 +8,7 @@ export class ObservationAssembler {
 
   assemble(
     domElements:  ElementRecord[],
+    forms:        FormMetadata[],
     a11yRecords:  A11yRecord[],
     screenshotPath: string,
     readiness:    boolean,
@@ -31,6 +32,7 @@ export class ObservationAssembler {
       readiness,
       screenshotPath,
       elementInventory: mergedElements,
+      forms,
       accessibilityTree: a11yRecords,
       frameInventory:   meta.frameInventory,
       visibleTextBlocks: meta.visibleTextBlocks,

@@ -10,22 +10,17 @@ const DOM_EXTRACTION_SCRIPT = `
       '[contenteditable="true"]'
     ];
     
-    const elements = document.querySelectorAll(INTERACTIVE_SELECTORS.join(','));
-    
-    return Array.from(elements).map(el => {
+    // ── Element Extraction ─────────────────────────────────────────────
+    const elementNodes = document.querySelectorAll(INTERACTIVE_SELECTORS.join(','));
+    const elements = Array.from(elementNodes).map(el => {
       const rect = el.getBoundingClientRect();
       const id = el.getAttribute('id');
       
-      // Label resolution — 4 mechanisms, priority order
       let labelText = null;
-      
-      // Mechanism 1: for/id association
       if (id) {
         const label = document.querySelector(\`label[for="\${id}"]\`);
         if (label) labelText = label.textContent?.trim();
       }
-      
-      // Mechanism 2: wrapping label (implicit)
       if (!labelText) {
         const parent = el.closest('label');
         if (parent) {
@@ -34,8 +29,6 @@ const DOM_EXTRACTION_SCRIPT = `
           labelText = clone.textContent?.trim();
         }
       }
-      
-      // Mechanism 3: aria-labelledby
       if (!labelText) {
         const labelledBy = el.getAttribute('aria-labelledby');
         if (labelledBy) {
@@ -44,13 +37,10 @@ const DOM_EXTRACTION_SCRIPT = `
             .filter(Boolean).join(' ');
         }
       }
-      
-      // Mechanism 4: aria-label direct
       if (!labelText) {
         labelText = el.getAttribute('aria-label');
       }
       
-      // ── Tier 6: Nearby visible text heuristic ─────────────────────────────
       const nearbyText = (() => {
         const prev = el.previousElementSibling;
         if (prev?.textContent?.trim()) return prev.textContent.trim();
@@ -64,7 +54,6 @@ const DOM_EXTRACTION_SCRIPT = `
         return '';
       })();
       
-      // ── Error signal: adjacent error element detection ─────────────────────
       const hasAdjacentError = (() => {
         const parent = el.parentElement;
         if (!parent) return false;
@@ -77,7 +66,6 @@ const DOM_EXTRACTION_SCRIPT = `
         );
       })();
       
-      // ── Selector generator ─────────────────────────────────────────────
       const generateSelector = (e) => {
         if (e.id) return '#' + CSS.escape(e.id);
         if (e.name) return e.tagName.toLowerCase() + '[name="' + CSS.escape(e.name) + '"]';
@@ -108,6 +96,34 @@ const DOM_EXTRACTION_SCRIPT = `
       
       const selector = generateSelector(el);
       
+      const parentForm = el.closest('form');
+      let parentFormId = null;
+      if (parentForm) {
+        parentFormId = parentForm.getAttribute('id');
+        if (!parentFormId) {
+          let path = [];
+          let current = parentForm;
+          while (current && current.nodeType === Node.ELEMENT_NODE) {
+            let sel = current.nodeName.toLowerCase();
+            if (current.id) {
+              sel += '#' + CSS.escape(current.id);
+              path.unshift(sel);
+              break;
+            } else {
+              let sibling = current;
+              let nth = 1;
+              while (sibling = sibling.previousElementSibling) {
+                if (sibling.nodeName.toLowerCase() == sel) nth++;
+              }
+              if (nth !== 1) { sel += \`:nth-of-type(\${nth})\`; }
+            }
+            path.unshift(sel);
+            current = current.parentNode;
+          }
+          parentFormId = \`form_\${path.join(' > ')}\`;
+        }
+      }
+      
       return {
         tag: el.tagName.toLowerCase(),
         type: el.getAttribute('type'),
@@ -120,31 +136,77 @@ const DOM_EXTRACTION_SCRIPT = `
         labelText,
         nearbyText,
         hasAdjacentError,
-        visible: rect.width > 0 && rect.height > 0 && 
-                 window.getComputedStyle(el).display !== 'none',
+        visible: rect.width > 0 && rect.height > 0 && window.getComputedStyle(el).display !== 'none',
         disabled: el.disabled || el.getAttribute('aria-disabled') === 'true',
         required: el.required || el.getAttribute('aria-required') === 'true',
         ariaInvalid: el.getAttribute('aria-invalid'),
         boundingBox: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
         role: el.getAttribute('role') || el.tagName.toLowerCase(),
-        parentFormId: el.closest('form')?.getAttribute('id') || null,
+        parentFormId,
         selector,
       };
     });
+
+    // ── Form Extraction ─────────────────────────────────────────────
+    const formNodes = document.querySelectorAll('form');
+    const forms = Array.from(formNodes).map(form => {
+      const id = form.getAttribute('id');
+      
+      const generateSelector = (e) => {
+        if (e.id) return '#' + CSS.escape(e.id);
+        if (e.name) return e.tagName.toLowerCase() + '[name="' + CSS.escape(e.name) + '"]';
+        let path = [];
+        let current = e;
+        while (current && current.nodeType === Node.ELEMENT_NODE) {
+          let sel = current.nodeName.toLowerCase();
+          if (current.id) {
+            sel += '#' + CSS.escape(current.id);
+            path.unshift(sel);
+            break;
+          } else {
+            let sibling = current;
+            let nth = 1;
+            while (sibling = sibling.previousElementSibling) {
+              if (sibling.nodeName.toLowerCase() == sel) nth++;
+            }
+            if (nth !== 1) { sel += \`:nth-of-type(\${nth})\`; }
+          }
+          path.unshift(sel);
+          current = current.parentNode;
+        }
+        return path.join(' > ');
+      };
+
+      // Extract context elements inside the form
+      const heading = form.querySelector('h1, h2, h3, h4, h5, h6')?.textContent?.trim() || null;
+      const legend = form.querySelector('legend')?.textContent?.trim() || null;
+      const title = form.getAttribute('title') || null;
+
+      return {
+        id,
+        name: form.getAttribute('name'),
+        ariaLabel: form.getAttribute('aria-label'),
+        title,
+        heading,
+        legend,
+        selector: generateSelector(form)
+      };
+    });
+    
+    return { elements, forms };
   })()
 `;
 
 export class DOMObserver {
-  async extract(page: Page): Promise<ElementRecord[]> {
-    const rawElements: RawElementRecord[] = await page.evaluate(DOM_EXTRACTION_SCRIPT);
+  async extract(page: Page): Promise<{ elements: ElementRecord[], forms: any[] }> {
+    const rawResult: { elements: RawElementRecord[], forms: any[] } = await page.evaluate(DOM_EXTRACTION_SCRIPT);
     
-    // UUID assigned here — browser context has no uuid package
-    // frameContext is null for main-frame elements;
-    // FrameManager.extractFromFrame(frameId, page) overwrites it for sub-frames
-    return rawElements.map(el => ({
+    const elements = rawResult.elements.map(el => ({
       ...el,
-      elementId: uuid(),   // stable reference ID for this observation cycle
-      frameContext: null,  // injected by FrameManager if element is inside an iframe
+      elementId: uuid(),
+      frameContext: null,
     }));
+
+    return { elements, forms: rawResult.forms };
   }
 }

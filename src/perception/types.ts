@@ -1,4 +1,4 @@
-import { ElementRecord } from '../shared/types';
+import { ElementRecord, FormMetadata } from '../shared/types';
 import { FrameRecord } from '../browser/types';
 
 export interface A11yRecord {
@@ -24,6 +24,7 @@ export interface Observation {
   readiness: boolean;
   screenshotPath: string;
   elementInventory: ElementRecord[];
+  forms: FormMetadata[];
   accessibilityTree: A11yRecord[];
   frameInventory: FrameRecord[];
   visibleTextBlocks: string[];

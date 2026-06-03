@@ -3,10 +3,12 @@ import { SubObjective } from '../core/types';
 import { ElementDiscovery } from './ElementDiscovery';
 import { IntentResolver } from './IntentResolver';
 import { ActionBuilder } from './ActionBuilder';
+import { ActiveFormSelector } from './ActiveFormSelector';
 
 export class ReasoningEngine {
   private intentResolver = new IntentResolver();
   private actionBuilder = new ActionBuilder();
+  private formSelector = new ActiveFormSelector();
 
   constructor(private elementDiscovery: ElementDiscovery) {}
 
@@ -14,13 +16,14 @@ export class ReasoningEngine {
     // 1. Resolve Intent
     const targetLabel = this.intentResolver.resolve(activeSubObjective);
 
-    // 2. Element Discovery
-    // Flat map all fields from world model forms to element records for discovery
-    // Wait, ElementDiscovery expects ElementRecords, but worldState has FieldState.
-    // We can map FieldState to a pseudo-ElementRecord, or change ElementDiscovery to use FieldState.
-    // Since ElementDiscovery takes elements, we should pass the raw elements from memory or WorldModel.
-    // Let's map FieldState back:
-    const fields = worldState.forms.flatMap(f => f.fields);
+    // 2. Active Form Selection
+    const formCandidates = this.formSelector.rankForms(worldState.forms, activeSubObjective);
+    const activeForm = formCandidates.length > 0 ? formCandidates[0].formState : null;
+    
+    // 3. Element Discovery
+    // Only use fields from the active form (prevents cross-form bleed)
+    const fields = activeForm ? activeForm.fields : [];
+    
     const mockElements = fields.map(f => ({
       elementId: f.elementId!,
       tag: f.tag,
@@ -40,7 +43,7 @@ export class ReasoningEngine {
       ariaInvalid: null,
       boundingBox: { x: 0, y: 0, width: 0, height: 0 },
       role: 'textbox',
-      parentFormId: null,
+      parentFormId: activeForm ? activeForm.formId : null,
       selector: f.selector,
       frameContext: f.frameContext,
     }));
@@ -53,13 +56,14 @@ export class ReasoningEngine {
         action: { name: 'none', params: {} },
         confidence: 0,
         discoveryTier: 9,
-        matchedSignal: 'none'
+        matchedSignal: 'none',
+        formCandidates
       };
     }
 
     const topCandidate = candidates[0];
 
-    // 3. Build Action
+    // 4. Build Action
     const action = this.actionBuilder.build(topCandidate, activeSubObjective);
 
     const alternatives = candidates.slice(0, 3).map(c => ({
@@ -76,7 +80,8 @@ export class ReasoningEngine {
       matchedSignal: topCandidate.matchedSignal,
       targetSelector: topCandidate.element.selector,
       targetLabel: topCandidate.element.labelText || topCandidate.element.id || topCandidate.element.name || 'Unknown Element',
-      alternatives
+      alternatives,
+      formCandidates
     };
   }
 

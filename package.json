@@ -1,0 +1,35 @@
+{
+  "name": "atlas-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "atlas": "./bin/atlas.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/cli/index.ts",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^15.0.0",
+    "dotenv": "^17.4.2",
+    "playwright": "^1.60.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "uuid": "^14.0.0",
+    "winston": "^3.19.0",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.9.1",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "vitest": "^4.1.8"
+  }
+}

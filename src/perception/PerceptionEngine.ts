@@ -30,7 +30,7 @@ export class PerceptionEngine {
     }
 
     // Extract DOM and A11y signals
-    const domElements = await this.domObserver.extract(page);
+    const { elements: domElements, forms } = await this.domObserver.extract(page);
     const a11yRecords = await this.a11yObserver.extract(page);
 
     // Get frames
@@ -47,6 +47,7 @@ export class PerceptionEngine {
 
     return this.assembler.assemble(
       domElements,
+      forms,
       a11yRecords,
       screenshotPath,
       isReady,

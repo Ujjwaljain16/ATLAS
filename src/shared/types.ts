@@ -26,4 +26,14 @@ export interface ElementRecord extends RawElementRecord {
   confirmedByA11y?: boolean;
 }
 
+export interface FormMetadata {
+  id: string | null;
+  name: string | null;
+  ariaLabel: string | null;
+  title: string | null;
+  heading: string | null;
+  legend: string | null;
+  selector: string;
+}
+
 export type FieldStatus = 'ERROR' | 'DISABLED' | 'EMPTY' | 'FILLED' | 'MISSING' | 'UNKNOWN';

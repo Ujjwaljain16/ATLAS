@@ -42,7 +42,7 @@ export class WorldModelBuilder {
     // If implicit global form, we process all inputs without a parentFormId
     const targetElements = form.formId === 'implicit_global_form' 
       ? obs.elementInventory.filter(el => !el.parentFormId)
-      : obs.elementInventory.filter(el => el.parentFormId === form.formId);
+      : obs.elementInventory.filter(el => el.parentFormId === form.metadata.id);
 
     return targetElements
       // CRITICAL: scope to THIS form ONLY — without this filter, on pages with
