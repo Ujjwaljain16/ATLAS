@@ -1,4 +1,4 @@
-import { ElementRecord } from '../shared/types';
+import { InteractiveElement } from '../shared/types';
 import { ATLASConfig } from '../config/ATLASConfig';
 import { EventBus } from '../observability/EventBus';
 import { ConfidenceScorer } from './ConfidenceScorer';
@@ -8,7 +8,7 @@ interface DiscoveryTier {
   tier: number;
   name: string;
   baseConfidence: number;
-  discover(elements: ElementRecord[], target: string): Candidate[];
+  discover(elements: InteractiveElement[], target: string): Candidate[];
 }
 
 export class ElementDiscovery {
@@ -35,8 +35,8 @@ export class ElementDiscovery {
         baseConfidence: 0.90,
         discover: (elements, target) =>
           elements.filter(el =>
-            el.labelText?.toLowerCase() === target.toLowerCase()
-          ).map(el => ({ element: el, matchStrength: 1.0, matchedSignal: `label_text: '${el.labelText}'` }))
+            el.label?.toLowerCase() === target.toLowerCase()
+          ).map(el => ({ element: el, matchStrength: 1.0, matchedSignal: `label_text: '${el.label}'` }))
       },
       {
         tier: 3,
@@ -44,9 +44,9 @@ export class ElementDiscovery {
         baseConfidence: 0.80,
         discover: (elements, target) =>
           elements.filter(el =>
-            el.labelText?.toLowerCase().includes(target.toLowerCase()) ||
+            el.label?.toLowerCase().includes(target.toLowerCase()) ||
             el.ariaLabel?.toLowerCase().includes(target.toLowerCase())
-          ).map(el => ({ element: el, matchStrength: 0.70, matchedSignal: `partial_label: '${el.labelText}'` }))
+          ).map(el => ({ element: el, matchStrength: 0.70, matchedSignal: `partial_label: '${el.label}'` }))
       },
       {
         tier: 4,
@@ -73,8 +73,8 @@ export class ElementDiscovery {
         baseConfidence: 0.60,
         discover: (elements, target) =>
           elements.filter(el =>
-            el.nearbyText?.toLowerCase().includes(target.toLowerCase())
-          ).map(el => ({ element: el, matchStrength: 0.50, matchedSignal: `nearby_text: '${el.nearbyText}'` }))
+            el.text?.toLowerCase().includes(target.toLowerCase())
+          ).map(el => ({ element: el, matchStrength: 0.50, matchedSignal: `nearby_text: '${el.text}'` }))
       },
       {
         tier: 7,
@@ -111,44 +111,76 @@ export class ElementDiscovery {
     ];
   }
   
-  discover(elements: ElementRecord[], target: string): RankedCandidate[] {
-    const allCandidates: RankedCandidate[] = [];
+  discover(elements: InteractiveElement[], targetGoal: string): RankedCandidate[] {
+    const quotes = targetGoal.match(/'([^']+)'|"([^"]+)"/g)?.map(q => q.replace(/['"]/g, '').toLowerCase()) || [];
+    const goalLower = targetGoal.toLowerCase();
     
-    for (const tier of this.tiers) {
-      if (tier.tier === 9 && !this.config.reasoning.enableCoordinateFallback) continue;
-      
-      const candidates = tier.discover(elements, target);
-      
-      for (const candidate of candidates) {
-        const confidence = this.confidenceScorer.score(
-          candidate,
-          tier.baseConfidence,
-          candidate.matchStrength
-        );
-        
-        allCandidates.push({
-          ...candidate,
-          tier: tier.tier,
-          tierName: tier.name,
-          confidence,
-          discoveryTier: tier.tier,
-          matchedSignal: candidate.matchedSignal,
-        });
-      }
+    // Pass 1: In-viewport only
+    const viewportElements = elements.filter(el => el.inViewport && el.visible);
+    const pass1Candidates = this.scoreElements(viewportElements, targetGoal, quotes, goalLower);
+    
+    // If we have high confidence candidates in viewport, return them
+    if (pass1Candidates.length > 0 && pass1Candidates[0].confidence >= this.config.reasoning.minConfidenceThreshold) {
+      return pass1Candidates;
     }
     
-    return this.deduplicateAndRank(allCandidates);
+    // Pass 2: Fallback to off-screen elements
+    const offscreenElements = elements.filter(el => !el.inViewport && el.visible);
+    const pass2Candidates = this.scoreElements(offscreenElements, targetGoal, quotes, goalLower);
+    
+    // Combine and sort
+    return [...pass1Candidates, ...pass2Candidates].sort((a, b) => b.confidence - a.confidence);
   }
 
-  private deduplicateAndRank(candidates: RankedCandidate[]): RankedCandidate[] {
-    const map = new Map<string, RankedCandidate>();
-    for (const c of candidates) {
-      if (!c.element.elementId) continue;
-      const existing = map.get(c.element.elementId);
-      if (!existing || c.confidence > existing.confidence) {
-        map.set(c.element.elementId, c);
+  private scoreElements(elements: InteractiveElement[], targetGoal: string, quotes: string[], goalLower: string): RankedCandidate[] {
+    const candidates: RankedCandidate[] = [];
+    const goalTerms = goalLower.split(/\s+/).filter(w => w.length > 3);
+    
+    for (const el of elements) {
+      let score = 0.1;
+      let matchedSignal = 'visible_element';
+
+      const elText = [el.text, el.label, el.ariaLabel, el.placeholder, el.value].filter(Boolean).join(' ').toLowerCase();
+      
+      if (quotes.length > 0 && quotes.some(q => elText.includes(q))) {
+        score = 0.95;
+        matchedSignal = 'goal_quote_match';
+      } else {
+        const matches = goalTerms.filter(w => elText.includes(w)).length;
+        if (matches > 0) {
+          // Progressive scoring: more matched terms = higher confidence
+          score = 0.30 + (0.12 * matches);
+          matchedSignal = `keyword_match(${matches}/${goalTerms.length} terms)`;
+        }
+      }
+
+      // Element-type bonus (differentiated)
+      if (el.elementType === 'TEXTBOX' || el.elementType === 'CONTENT_EDITABLE') score += 0.15;
+      else if (el.elementType === 'BUTTON') score += 0.08;
+      else if (el.elementType === 'LINK') score += 0.05;
+
+      // Viewport and aria bonuses
+      if (el.inViewport) score += 0.05;
+      if (el.ariaLabel) score += 0.03;
+
+      candidates.push({
+        element: el,
+        matchStrength: score,
+        tier: 1,
+        tierName: 'Semantic Ranking',
+        confidence: Math.min(0.99, score),
+        discoveryTier: 1,
+        matchedSignal
+      });
+    }
+
+    // Normalize scores so there's visible differentiation between candidates
+    const sorted = candidates.sort((a, b) => b.confidence - a.confidence);
+    if (sorted.length > 1 && sorted[0].confidence > 0.1) {
+      for (let i = 1; i < sorted.length; i++) {
+        sorted[i].confidence = Math.max(0.05, sorted[i].confidence - i * 0.03);
       }
     }
-    return Array.from(map.values()).sort((a, b) => b.confidence - a.confidence);
+    return sorted;
   }
 }

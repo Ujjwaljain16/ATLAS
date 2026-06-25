@@ -3,8 +3,8 @@ import { ATLASTool, ToolResult } from '../types';
 import { BrowserController } from '../../browser/BrowserController';
 import { v4 as uuid } from 'uuid';
 
-export class NavigateTool implements ATLASTool<{ url: string, allowedDomains?: string[] }, void> {
-  name = 'navigate_to_url';
+export class NavigateTool implements ATLASTool<{ url: string, allowedDomains?: string[], strictDomainCheck?: boolean }, void> {
+  name = 'navigate';
   description = 'Navigates to a specific URL';
   inputSchema = z.object({
     url: z.string().url(),
@@ -13,6 +13,17 @@ export class NavigateTool implements ATLASTool<{ url: string, allowedDomains?: s
   });
   timeoutMs = 30000;
   maxRetries = 2;
+  metadata = {
+    arguments: { url: 'string (required)' },
+    preconditions: 'None.',
+    postconditions: 'Page is loaded at new URL.',
+    sideEffects: 'Completely changes WorldModel.',
+    cost: 5,
+    verifiable: true,
+    supportsRetry: true,
+    supportsRecovery: true,
+    failureModes: ['Timeout', 'NetworkError']
+  };
 
   async execute(params: { url: string, allowedDomains?: string[], strictDomainCheck?: boolean }, browser: BrowserController): Promise<ToolResult<void>> {
     const startedAt = new Date().toISOString();

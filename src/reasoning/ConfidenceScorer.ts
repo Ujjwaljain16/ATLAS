@@ -7,14 +7,14 @@ export class ConfidenceScorer {
     
     // Bonus signals
     if (candidate.element.visible)                score += 0.05;
-    if (!candidate.element.disabled)              score += 0.05;
+    if (candidate.element.enabled)                score += 0.05;
     if (candidate.element.parentFormId !== null)  score += 0.05;
     if (this.isTypeCompatible(candidate))         score += 0.10;
     if (candidate.confirmedByA11y)                score += 0.08;
     
     // Penalty signals
     if (!candidate.element.visible)               score -= 0.40;
-    if (candidate.element.disabled)               score -= 0.30;
+    if (!candidate.element.enabled)               score -= 0.30;
     if (!this.isTypeCompatible(candidate))        score -= 0.20;
     
     return Math.max(0, Math.min(1, score));

@@ -16,17 +16,41 @@ export interface SendKeysData {
 }
 
 export class SendKeysTool implements ATLASTool<SendKeysInput, SendKeysData> {
-  name = 'send_keys';
+  name = 'type';
   description = 'Sends keystrokes to an element identified by elementId';
   inputSchema = SendKeysInputSchema;
   timeoutMs = 15000;
   maxRetries = 2;
+  requiredState = {
+    editable: true,
+    focused: true
+  };
+
+  metadata = {
+    arguments: { elementId: 'string (required)', text: 'string (required)', submit: 'boolean (optional)' },
+    preconditions: 'Element must be an input or textbox and be visible.',
+    postconditions: 'Text is typed into the element.',
+    sideEffects: 'Input values change. May trigger form submission if submit=true.',
+    cost: 2,
+    verifiable: true,
+    supportsRetry: true,
+    supportsRecovery: true,
+    failureModes: ['ElementHidden', 'ElementDetached']
+  };
   
   async execute(input: SendKeysInput, browser: BrowserController): Promise<ToolResult<SendKeysData>> {
     const start = Date.now();
     
     try {
-      const locator = await browser.locateElement(input.elementId);
+      let locator;
+      if (input.elementId === '__ACTIVE_ELEMENT__') {
+        const page = browser.getPage();
+        // Fallback to active element via a locator that resolves document.activeElement
+        // In Playwright, page.locator('*:focus') gets the active element!
+        locator = page.locator('*:focus');
+      } else {
+        locator = await browser.locateElement(input.elementId);
+      }
       
       if (input.clearFirst) {
         await locator.clear();

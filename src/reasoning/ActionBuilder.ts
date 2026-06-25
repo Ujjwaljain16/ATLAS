@@ -8,7 +8,7 @@ export class ActionBuilder {
       return {
         name: 'select_option',
         params: {
-          elementId: candidate.element.elementId,
+          elementId: candidate.element.id,
           text: subObjective.expectedValue,
         }
       };
@@ -17,7 +17,7 @@ export class ActionBuilder {
     return {
       name: 'send_keys',
       params: {
-        elementId: candidate.element.elementId,
+        elementId: candidate.element.id,
         text: subObjective.expectedValue,
         clearFirst: true,
       }
