@@ -1,0 +1,340 @@
+{
+  "rootNodeId": "ae0a88a2-7e4e-405c-b391-c411ed9b2c6f",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 10,
+  "edgeCount": 9,
+  "nodes": [
+    {
+      "nodeId": "ae0a88a2-7e4e-405c-b391-c411ed9b2c6f",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:49:06.507Z"
+    },
+    {
+      "nodeId": "83d20ace-d77a-4168-840e-8123aac837d5",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:49:12.295Z"
+    },
+    {
+      "nodeId": "66f4819e-2c32-4d30-883e-de25cdefa9e4",
+      "stepNumber": 3,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 3",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:49:26.481Z"
+    },
+    {
+      "nodeId": "c56761a0-f537-45b7-82e7-d5359778489b",
+      "stepNumber": 4,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 4",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:49:29.654Z"
+    },
+    {
+      "nodeId": "d9fa3504-f5eb-47b4-b721-d9e531f4bf47",
+      "stepNumber": 5,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/results?search_query=Never+gonna+give+you+up",
+        "title": "Never gonna give you up - YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 5",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:49:42.293Z"
+    },
+    {
+      "nodeId": "04c059f2-6f23-497e-a283-fd690d94143b",
+      "stepNumber": 6,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/watch?v=8leAAwMIigI&list=RD8leAAwMIigI&start_radio=1",
+        "title": "Rick Astley - Never Gonna Give You Up (Karaoke Version) - YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 6",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:49:50.172Z"
+    },
+    {
+      "nodeId": "51a01560-33d1-49a4-8c72-ea04dace68c4",
+      "stepNumber": 7,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/watch?v=8leAAwMIigI&list=RD8leAAwMIigI&start_radio=1",
+        "title": "Rick Astley - Never Gonna Give You Up (Karaoke Version) - YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 7",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:49:54.433Z"
+    },
+    {
+      "nodeId": "4321ca01-25cc-4d0f-bb47-5c27bfe4e66d",
+      "stepNumber": 8,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/results?search_query=Never+gonna+give+you+up",
+        "title": "Never gonna give you up - YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 8",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:50:03.423Z"
+    },
+    {
+      "nodeId": "d007f543-d648-43a3-bc98-50ce6e214242",
+      "stepNumber": 9,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/results?search_query=Never+gonna+give+you+up",
+        "title": "Never gonna give you up - YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 9",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:50:12.358Z"
+    },
+    {
+      "nodeId": "a9a21ebf-2034-445d-8217-5841e14c6eaf",
+      "stepNumber": 10,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/results?search_query=Never+gonna+give+you+up",
+        "title": "Never gonna give you up - YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 10",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:50:19.495Z"
+    }
+  ],
+  "edges": [
+    {
+      "id": "d38d0497-2bcd-46b4-a3d4-c333f275b80b",
+      "fromNodeId": "ae0a88a2-7e4e-405c-b391-c411ed9b2c6f",
+      "toNodeId": "83d20ace-d77a-4168-840e-8123aac837d5",
+      "action": {
+        "name": "wait_until",
+        "params": {
+          "condition": "dom_stable"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "The URL and Title remained consistent across the 'Before' and 'After' states, indicating the page remained stable as expected for the 'wait_until' action.",
+        "verificationType": "LLM",
+        "expected": "The page remains stable, confirming readiness for interaction.",
+        "observed": "The URL and Title remained consistent across the 'Before' and 'After' states, indicating the page remained stable as expected for the 'wait_until' action."
+      },
+      "thought": "The goal is to navigate to youtube.com. I am currently on the correct URL and the page elements are visible, indicating that the initial navigation is complete despite the minor console error.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "e259f410-51ac-44c9-87ee-f53d57976feb",
+      "fromNodeId": "83d20ace-d77a-4168-840e-8123aac837d5",
+      "toNodeId": "66f4819e-2c32-4d30-883e-de25cdefa9e4",
+      "action": {
+        "name": "type",
+        "params": {
+          "elementId": "fe0675c2-a7e0-4f2b-99a2-4fa0fd3d43c2",
+          "text": "Never gonna give you up"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": false,
+        "reason": "Target element fe0675c2-a7e0-4f2b-99a2-4fa0fd3d43c2 disappeared from DOM after typing.",
+        "verificationType": "DOM",
+        "expected": "Never gonna give you up",
+        "observed": "Element missing"
+      },
+      "thought": "The search bar has been identified with an ID of 'fe0675c2-a7e0-4f2b-99a2-4fa0fd3d43c2'. I need to type the search query 'Never gonna give you up' into this textbox.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "36c3c723-a439-4e76-be38-2a6ec51f0d7e",
+      "fromNodeId": "66f4819e-2c32-4d30-883e-de25cdefa9e4",
+      "toNodeId": "c56761a0-f537-45b7-82e7-d5359778489b",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "26af7769-c2ff-48ae-ae4c-7389dbf5112f"
+        }
+      },
+      "toolResult": {
+        "success": false,
+        "errorCode": "CLICK_FAILED"
+      },
+      "thought": "The search term has been typed into the search bar, and the search suggestions dropdown is now visible. I need to click the search button to initiate the search.",
+      "confidence": 0.95,
+      "edgeType": "RECOVERY"
+    },
+    {
+      "id": "44e57d69-c0a9-41bf-9e0d-b5378064460c",
+      "fromNodeId": "c56761a0-f537-45b7-82e7-d5359778489b",
+      "toNodeId": "d9fa3504-f5eb-47b4-b721-d9e531f4bf47",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "video-title"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "URL mutated after click.",
+        "verificationType": "URL",
+        "expected": "URL Change",
+        "observed": "https://www.youtube.com/watch?v=8leAAwMIigI&list=RD8leAAwMIigI&start_radio=1"
+      },
+      "thought": "The goal was to locate the search bar and type the query, which has already been completed according to the history log. The search results page is now loaded. The next logical step to fulfill the underlying intent of finding the video is to click on the primary video result.",
+      "confidence": 0.98,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "0e889b52-6db0-4cd8-95ff-466c7d9cb900",
+      "fromNodeId": "d9fa3504-f5eb-47b4-b721-d9e531f4bf47",
+      "toNodeId": "04c059f2-6f23-497e-a283-fd690d94143b",
+      "action": {
+        "name": "type",
+        "params": {
+          "elementId": "7408107d-2939-4367-a8ff-ade50734087d",
+          "text": "Never gonna give you up"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": false,
+        "reason": "Target element 7408107d-2939-4367-a8ff-ade50734087d disappeared from DOM after typing.",
+        "verificationType": "DOM",
+        "expected": "Never gonna give you up",
+        "observed": "Element missing"
+      },
+      "thought": "The goal is to type 'Never gonna give you up' into the search bar. The key element 7408107d-2939-4367-a8ff-ade50734087d corresponds to the search textbox which is identified as having the correct value already or being the correct target for the action.",
+      "confidence": 0.98,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "3974bea0-2e79-4b0e-b3f6-9ba0bc146d8e",
+      "fromNodeId": "04c059f2-6f23-497e-a283-fd690d94143b",
+      "toNodeId": "51a01560-33d1-49a4-8c72-ea04dace68c4",
+      "action": {
+        "name": "press_key",
+        "params": {
+          "key": "Enter"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "The URL changed from a video page to the YouTube search results page for 'Never gonna give you up', matching the expected outcome.",
+        "verificationType": "LLM",
+        "expected": "The YouTube search results page for 'Never gonna give you up' will load.",
+        "observed": "The URL changed from a video page to the YouTube search results page for 'Never gonna give you up', matching the expected outcome."
+      },
+      "thought": "The search bar has already been typed into with 'Never gonna give you up', as seen in the page elements. The goal asks to 'Locate the search bar and type', which is technically already achieved. I should finalize the search action by pressing Enter to trigger the search.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "fca5b75f-2aed-4bea-a7ac-8ed858f1c684",
+      "fromNodeId": "51a01560-33d1-49a4-8c72-ea04dace68c4",
+      "toNodeId": "4321ca01-25cc-4d0f-bb47-5c27bfe4e66d",
+      "action": {
+        "name": "wait_until",
+        "params": {
+          "condition": "dom_stable"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": false,
+        "reason": "The 'Visible text sample' in the After State is empty. If the page had finalized loading all elements and the search results were ready, there should be visible text present, such as video titles or descriptions, for the given search query.",
+        "verificationType": "LLM",
+        "expected": "The page should finalize loading all elements, confirming the search results are ready.",
+        "observed": "The 'Visible text sample' in the After State is empty. If the page had finalized loading all elements and the search results were ready, there should be visible text present, such as video titles or descriptions, for the given search query."
+      },
+      "thought": "The previous search was initiated, and the URL already reflects the search query 'Never gonna give you up'. Since the goal is to execute the search and the page is currently on the results page, the search has already been executed. To confirm the current state is stable and finished, I will wait for the DOM to become stable.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "279f655b-13e5-48ad-8db9-e051db035bc0",
+      "fromNodeId": "4321ca01-25cc-4d0f-bb47-5c27bfe4e66d",
+      "toNodeId": "d007f543-d648-43a3-bc98-50ce6e214242",
+      "action": {
+        "name": "press_key",
+        "params": {
+          "key": "Enter"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "Fallback to true on parser error",
+        "verificationType": "LLM"
+      },
+      "thought": "The goal is to execute the search by pressing 'Enter'. Although the search text is already in the textbox, the browser is waiting for the trigger. The most reliable way to execute a search in a standard input field is to send the 'Enter' key.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "82ce4d93-3c48-4caf-865f-5b1773f5dde4",
+      "fromNodeId": "d007f543-d648-43a3-bc98-50ce6e214242",
+      "toNodeId": "a9a21ebf-2034-445d-8217-5841e14c6eaf",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "video-title"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "URL mutated after click.",
+        "verificationType": "URL",
+        "expected": "URL Change",
+        "observed": "https://www.youtube.com/watch?v=w1GaOwFy2Zc&list=RDw1GaOwFy2Zc&start_radio=1"
+      },
+      "thought": "I have identified the video result for 'Never Gonna Give You Up' in the search results page. The next logical step is to click the video title to navigate to the video playback page.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    }
+  ]
+}

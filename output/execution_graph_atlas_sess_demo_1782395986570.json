@@ -1,0 +1,33 @@
+{
+  "rootNodeId": "bd7be64e-2e9b-4f8d-89d1-e5222b388315",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 2,
+  "edgeCount": 0,
+  "nodes": [
+    {
+      "nodeId": "bd7be64e-2e9b-4f8d-89d1-e5222b388315",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F168xLYDZ4I02i2NLfSm5MzaluHlUrXoDPjXwk290DCjk%2Fedit%3Ftab%3Dt.0&dsh=S-1811189146%3A1782395989369062&followup=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F168xLYDZ4I02i2NLfSm5MzaluHlUrXoDPjXwk290DCjk%2Fedit%3Ftab%3Dt.0&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&ifkv=AcDsRvyD1txLhLvbABZN3Q8q5Sh0feBT6-xSZ812aidTMLAF9N4DTidKwHabKt7dtSZ96SQGsVE7_Q",
+        "title": "Google Docs: Sign-in",
+        "classification": "AUTH_PAGE",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T13:59:54.937Z"
+    },
+    {
+      "nodeId": "8e61eccd-b24e-42e9-a07c-c66cc228740c",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F168xLYDZ4I02i2NLfSm5MzaluHlUrXoDPjXwk290DCjk%2Fedit%3Ftab%3Dt.0&dsh=S-1811189146%3A1782395989369062&followup=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F168xLYDZ4I02i2NLfSm5MzaluHlUrXoDPjXwk290DCjk%2Fedit%3Ftab%3Dt.0&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&ifkv=AcDsRvyD1txLhLvbABZN3Q8q5Sh0feBT6-xSZ812aidTMLAF9N4DTidKwHabKt7dtSZ96SQGsVE7_Q",
+        "title": "Google Docs: Sign-in",
+        "classification": "AUTH_PAGE",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:00:00.810Z"
+    }
+  ],
+  "edges": []
+}

@@ -1,0 +1,52 @@
+{
+  "rootNodeId": "f811e51e-5509-437f-b699-c4749db68f91",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 2,
+  "edgeCount": 1,
+  "nodes": [
+    {
+      "nodeId": "f811e51e-5509-437f-b699-c4749db68f91",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:31:32.518Z"
+    },
+    {
+      "nodeId": "97b4c1ac-4f5c-49e1-9660-3fd083ae7521",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T11:31:44.260Z"
+    }
+  ],
+  "edges": [
+    {
+      "edgeId": "68c9391e-4586-45f5-b883-d71f459212c2",
+      "fromNodeId": "f811e51e-5509-437f-b699-c4749db68f91",
+      "toNodeId": "97b4c1ac-4f5c-49e1-9660-3fd083ae7521",
+      "action": {
+        "name": "type",
+        "params": {
+          "elementId": "6b2657ab-60d8-4a57-b693-58553619937f",
+          "text": "Never gonna give you up"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "thought": "The search bar has been identified with high confidence. I need to type the search query into the textbox to proceed with the goal.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    }
+  ]
+}

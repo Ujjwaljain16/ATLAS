@@ -1,0 +1,162 @@
+{
+  "rootNodeId": "2e9e2cdb-bd6b-4ffd-a9ad-928ffa8f1e67",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 5,
+  "edgeCount": 4,
+  "nodes": [
+    {
+      "nodeId": "2e9e2cdb-bd6b-4ffd-a9ad-928ffa8f1e67",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:42:37.051Z"
+    },
+    {
+      "nodeId": "f13f8fb3-d19d-4987-9a68-e0c6365fcb1e",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:42:43.012Z"
+    },
+    {
+      "nodeId": "aaf3e9af-efbc-4e10-b2c6-135903dc8646",
+      "stepNumber": 3,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 3",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:42:49.370Z"
+    },
+    {
+      "nodeId": "0f86478f-3395-47bd-b300-7aa38199cefe",
+      "stepNumber": 4,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 4",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:42:55.678Z"
+    },
+    {
+      "nodeId": "64f417cc-519e-4287-94e3-a9a2f74c08ab",
+      "stepNumber": 5,
+      "worldStateSummary": {
+        "url": "https://github.com/search?q=browser-use&type=repositories",
+        "title": "Repository search results · GitHub",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 5",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:43:04.303Z"
+    }
+  ],
+  "edges": [
+    {
+      "id": "97015f00-f2a9-40ea-be79-53ae100ce737",
+      "fromNodeId": "2e9e2cdb-bd6b-4ffd-a9ad-928ffa8f1e67",
+      "toNodeId": "f13f8fb3-d19d-4987-9a68-e0c6365fcb1e",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "4d3711f5-4f46-4418-89ca-ab4007de1638"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": false,
+        "reason": "No observable URL or DOM state mutation detected after click.",
+        "verificationType": "DOM",
+        "expected": "Observable mutation",
+        "observed": "State identical"
+      },
+      "thought": "The goal is to search for 'browser-use' in the GitHub search bar. The search bar is visible with the label 'Search or jump to…'. Clicking it is the necessary first step to input the search term.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "5eb027e9-c20b-46dc-a1f7-7eece21cfedc",
+      "fromNodeId": "f13f8fb3-d19d-4987-9a68-e0c6365fcb1e",
+      "toNodeId": "aaf3e9af-efbc-4e10-b2c6-135903dc8646",
+      "action": {
+        "name": "type",
+        "params": {
+          "elementId": "query-builder-test",
+          "text": "browser-use",
+          "submit": true
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "DOM state verified: Input value contains expected text.",
+        "verificationType": "DOM",
+        "expected": "browser-use",
+        "observed": "browser-use"
+      },
+      "thought": "The previous attempt to click the search button failed, likely because the search input needs to be interacted with directly as a text field or the element requires focus. I will use the 'type' tool on the search box with the 'submit' flag, which is a more robust way to trigger the search than clicking the placeholder button.",
+      "confidence": 0.85,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "4b593fad-dcf3-4f38-af40-9a525974f077",
+      "fromNodeId": "aaf3e9af-efbc-4e10-b2c6-135903dc8646",
+      "toNodeId": "0f86478f-3395-47bd-b300-7aa38199cefe",
+      "action": {
+        "name": "press_key",
+        "params": {
+          "key": "Enter"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "The browser navigated to the expected URL 'https://github.com/search?q=browser-use&type=repositories' with the expected title 'Repository search results · GitHub', which matches the description of a GitHub search results page for 'browser-use'.",
+        "verificationType": "LLM",
+        "expected": "The browser should navigate to the GitHub search results page for 'browser-use'.",
+        "observed": "The browser navigated to the expected URL 'https://github.com/search?q=browser-use&type=repositories' with the expected title 'Repository search results · GitHub', which matches the description of a GitHub search results page for 'browser-use'."
+      },
+      "thought": "The search term 'browser-use' has been typed into the search bar, but the form has not been submitted yet. To execute the search, I need to press the 'Enter' key while the search input is focused.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "1866bb6c-9edf-42ce-96c0-f5fd445b5e10",
+      "fromNodeId": "0f86478f-3395-47bd-b300-7aa38199cefe",
+      "toNodeId": "64f417cc-519e-4287-94e3-a9a2f74c08ab",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "5ce819fb-a800-4183-8cbc-14003ee7b6fb"
+        }
+      },
+      "toolResult": {
+        "success": false,
+        "errorCode": "CLICK_FAILED"
+      },
+      "thought": "The user wants to navigate to the 'browser-use' repository, which is clearly visible as the first search result with ID '5ce819fb-a800-4183-8cbc-14003ee7b6fb'. Clicking this link will complete the goal of reaching the repository page.",
+      "confidence": 0.99,
+      "edgeType": "RECOVERY"
+    }
+  ]
+}

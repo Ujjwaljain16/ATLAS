@@ -1,0 +1,52 @@
+{
+  "rootNodeId": "fb20a1b4-ce5d-4981-a7c1-7f0be2378830",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 2,
+  "edgeCount": 1,
+  "nodes": [
+    {
+      "nodeId": "fb20a1b4-ce5d-4981-a7c1-7f0be2378830",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://github.com/ujjwaljain16",
+        "title": "Ujjwaljain16 (Ujjwal Jain) · GitHub",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T12:37:56.709Z"
+    },
+    {
+      "nodeId": "69c6adcb-f747-4233-b016-991bd7167066",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://github.com/ujjwaljain16",
+        "title": "Ujjwaljain16 (Ujjwal Jain) · GitHub",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T12:38:02.706Z"
+    }
+  ],
+  "edges": [
+    {
+      "id": "7feafeb0-ec2a-4e43-89f1-5fb3ff99a695",
+      "fromNodeId": "fb20a1b4-ce5d-4981-a7c1-7f0be2378830",
+      "toNodeId": "69c6adcb-f747-4233-b016-991bd7167066",
+      "action": {
+        "name": "click",
+        "params": {
+          "id": "fdc7209e-6a60-4282-8988-ec838eb64f92"
+        }
+      },
+      "toolResult": {
+        "success": false,
+        "errorCode": "CLICK_FAILED"
+      },
+      "thought": "To access the 'ATLAS' repository, I first need to navigate to the 'Repositories' tab on the user's GitHub profile. I have identified the link for the repositories list.",
+      "confidence": 0.95,
+      "edgeType": "RECOVERY"
+    }
+  ]
+}

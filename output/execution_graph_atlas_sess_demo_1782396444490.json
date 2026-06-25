@@ -1,0 +1,70 @@
+{
+  "rootNodeId": "ac5d9bed-abd1-49be-b297-b92af180ecb1",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 3,
+  "edgeCount": 1,
+  "nodes": [
+    {
+      "nodeId": "ac5d9bed-abd1-49be-b297-b92af180ecb1",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:07:42.474Z"
+    },
+    {
+      "nodeId": "74948775-f0c9-4805-a501-aba87adf3f2c",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:07:48.001Z"
+    },
+    {
+      "nodeId": "c6482669-ec3a-4d9f-bff1-7a695be91884",
+      "stepNumber": 3,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 3",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:07:53.870Z"
+    }
+  ],
+  "edges": [
+    {
+      "id": "bfd19eb0-ca5f-4065-a3eb-d49637d933e6",
+      "fromNodeId": "ac5d9bed-abd1-49be-b297-b92af180ecb1",
+      "toNodeId": "74948775-f0c9-4805-a501-aba87adf3f2c",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "622e528a-a415-4705-898f-88008357d730"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": false,
+        "reason": "No observable URL or DOM state mutation detected after click.",
+        "verificationType": "DOM",
+        "expected": "Observable mutation",
+        "observed": "State identical"
+      },
+      "thought": "The user wants to search for 'browser-use' on GitHub. The search bar is visible on the current page as 'Search or jump to…'. I need to click it to activate the input field, and then I will be able to type the search query.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    }
+  ]
+}

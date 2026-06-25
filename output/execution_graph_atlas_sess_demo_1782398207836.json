@@ -1,0 +1,33 @@
+{
+  "rootNodeId": "a937cf37-50e3-4e28-b0dc-ed5234a15fd3",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 2,
+  "edgeCount": 0,
+  "nodes": [
+    {
+      "nodeId": "a937cf37-50e3-4e28-b0dc-ed5234a15fd3",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:36:57.562Z"
+    },
+    {
+      "nodeId": "b800bdf1-84f4-4508-b121-82713bd63b33",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:37:16.028Z"
+    }
+  ],
+  "edges": []
+}

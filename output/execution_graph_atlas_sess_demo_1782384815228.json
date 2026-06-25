@@ -1,0 +1,82 @@
+{
+  "rootNodeId": "6f6bbb31-cae6-4c7d-8bc3-808109abe5e0",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 3,
+  "edgeCount": 2,
+  "nodes": [
+    {
+      "nodeId": "6f6bbb31-cae6-4c7d-8bc3-808109abe5e0",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T10:53:42.894Z"
+    },
+    {
+      "nodeId": "6cca9b0a-6526-4a32-b021-836214a0c77f",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T10:53:45.818Z"
+    },
+    {
+      "nodeId": "bda11871-3cac-4014-83cd-9d38a7da0547",
+      "stepNumber": 3,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 3",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T10:53:52.759Z"
+    }
+  ],
+  "edges": [
+    {
+      "edgeId": "8fbd359f-6eb6-412a-b7e0-a444652fb7c7",
+      "fromNodeId": "6f6bbb31-cae6-4c7d-8bc3-808109abe5e0",
+      "toNodeId": "6cca9b0a-6526-4a32-b021-836214a0c77f",
+      "action": {
+        "name": "type",
+        "params": {
+          "elementId": "1941b7b8-a665-4265-a8a7-bd5c3d186455",
+          "text": "Never gonna give you up"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "thought": "The search input field (id: 1941b7b8-a665-4265-a8a7-bd5c3d186455) has been identified as the correct element to fulfill the goal of typing 'Never gonna give you up'. I will now perform the type action on this element.",
+      "confidence": 1,
+      "edgeType": "PLANNED"
+    },
+    {
+      "edgeId": "e8b7b735-4195-48c4-b7f9-be2e6117baaf",
+      "fromNodeId": "6cca9b0a-6526-4a32-b021-836214a0c77f",
+      "toNodeId": "bda11871-3cac-4014-83cd-9d38a7da0547",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "35960b4d-584d-46a5-b1cb-ef7725014879"
+        }
+      },
+      "toolResult": {
+        "success": false,
+        "errorCode": "CLICK_FAILED"
+      },
+      "thought": "The search field is already populated with the correct text. To proceed with searching, I need to trigger the search action, which is represented by the 'Search' button element.",
+      "confidence": 1,
+      "edgeType": "RECOVERY"
+    }
+  ]
+}

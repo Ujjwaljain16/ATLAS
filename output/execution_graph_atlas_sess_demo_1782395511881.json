@@ -1,0 +1,33 @@
+{
+  "rootNodeId": "c4c1b9e4-9066-4115-8694-66578925600e",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 2,
+  "edgeCount": 0,
+  "nodes": [
+    {
+      "nodeId": "c4c1b9e4-9066-4115-8694-66578925600e",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+        "title": "Artificial intelligence - Wikipedia",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T13:52:02.414Z"
+    },
+    {
+      "nodeId": "133e7e4a-f654-4413-8395-6497830db8d4",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+        "title": "Artificial intelligence - Wikipedia",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T13:53:05.227Z"
+    }
+  ],
+  "edges": []
+}

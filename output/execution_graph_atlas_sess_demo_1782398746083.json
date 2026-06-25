@@ -1,0 +1,162 @@
+{
+  "rootNodeId": "cc82658a-4d92-4b98-8d08-2f7f8ad3a8ea",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 5,
+  "edgeCount": 4,
+  "nodes": [
+    {
+      "nodeId": "cc82658a-4d92-4b98-8d08-2f7f8ad3a8ea",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:46:01.822Z"
+    },
+    {
+      "nodeId": "b91e15f8-7d7a-43fa-9d03-0bc5002c3e9a",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:46:07.819Z"
+    },
+    {
+      "nodeId": "bc023d14-d841-424a-9044-9177ffaabe84",
+      "stepNumber": 3,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 3",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:46:13.954Z"
+    },
+    {
+      "nodeId": "d14b55ac-8ee8-4c39-a495-d9b3e00faca2",
+      "stepNumber": 4,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 4",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:46:20.752Z"
+    },
+    {
+      "nodeId": "72b01e3f-cdff-4b5b-a864-1ac24764c403",
+      "stepNumber": 5,
+      "worldStateSummary": {
+        "url": "https://github.com/search?q=browser-use&type=repositories",
+        "title": "Repository search results · GitHub",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 5",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:46:32.278Z"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e7fdaf22-190e-44eb-85aa-6b68ba388ac8",
+      "fromNodeId": "cc82658a-4d92-4b98-8d08-2f7f8ad3a8ea",
+      "toNodeId": "b91e15f8-7d7a-43fa-9d03-0bc5002c3e9a",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "2363ab68-b04e-471e-8f72-d39cabf4d200"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": false,
+        "reason": "No observable URL or DOM state mutation detected after click.",
+        "verificationType": "DOM",
+        "expected": "Observable mutation",
+        "observed": "State identical"
+      },
+      "thought": "The user wants to search for 'browser-use' on GitHub. The search bar is visible on the page (element ID 2363ab68-b04e-471e-8f72-d39cabf4d200). I should click this to open the search interface or prepare it for typing.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "f89fb17a-59de-4d48-9cf7-9bb423e7226f",
+      "fromNodeId": "b91e15f8-7d7a-43fa-9d03-0bc5002c3e9a",
+      "toNodeId": "bc023d14-d841-424a-9044-9177ffaabe84",
+      "action": {
+        "name": "type",
+        "params": {
+          "elementId": "query-builder-test",
+          "text": "browser-use",
+          "submit": true
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "DOM state verified: Input value contains expected text.",
+        "verificationType": "DOM",
+        "expected": "browser-use",
+        "observed": "browser-use"
+      },
+      "thought": "The user wants to search for 'browser-use' in the GitHub search bar. The previous attempt to click the search button failed, likely because the search input needs to be interacted with directly. The 'query-builder-test' element is identified as a textbox/combobox suitable for search. I will use the 'type' tool to input 'browser-use' into this element and set 'submit' to true to trigger the search.",
+      "confidence": 0.85,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "b5b150cc-df09-4d9d-9a61-01a91e0c2fa5",
+      "fromNodeId": "bc023d14-d841-424a-9044-9177ffaabe84",
+      "toNodeId": "d14b55ac-8ee8-4c39-a495-d9b3e00faca2",
+      "action": {
+        "name": "press_key",
+        "params": {
+          "key": "Enter"
+        }
+      },
+      "toolResult": {
+        "success": true
+      },
+      "actionVerification": {
+        "success": true,
+        "reason": "The URL and Title in the After State match the expected navigation to the GitHub search results page for 'browser-use'.",
+        "verificationType": "LLM",
+        "expected": "The page should navigate to the GitHub search results page for 'browser-use'.",
+        "observed": "The URL and Title in the After State match the expected navigation to the GitHub search results page for 'browser-use'."
+      },
+      "thought": "The search term 'browser-use' has been typed into the search field. To complete the search, I need to press the 'Enter' key while the search input is focused, or submit the form.",
+      "confidence": 0.95,
+      "edgeType": "PLANNED"
+    },
+    {
+      "id": "506ee0bc-fbe0-4e0b-af75-3614d49a3b2e",
+      "fromNodeId": "d14b55ac-8ee8-4c39-a495-d9b3e00faca2",
+      "toNodeId": "72b01e3f-cdff-4b5b-a864-1ac24764c403",
+      "action": {
+        "name": "click",
+        "params": {
+          "elementId": "028a5e13-3a9f-483d-ab64-53cea9bec30c"
+        }
+      },
+      "toolResult": {
+        "success": false,
+        "errorCode": "CLICK_FAILED"
+      },
+      "thought": "The previous action successfully reached the GitHub search results page. The target repository 'browser-use/browser-use' is visible as the first link in the list with a high confidence score of 0.99. I should now click this element to navigate to the repository page.",
+      "confidence": 0.99,
+      "edgeType": "RECOVERY"
+    }
+  ]
+}

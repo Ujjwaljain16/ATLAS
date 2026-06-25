@@ -1,0 +1,66 @@
+{
+  "rootNodeId": "c10a4b69-d921-49a4-bee5-514408f078de",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 3,
+  "edgeCount": 1,
+  "nodes": [
+    {
+      "nodeId": "c10a4b69-d921-49a4-bee5-514408f078de",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:11:57.679Z"
+    },
+    {
+      "nodeId": "1be8233f-c557-44e0-b386-65d7086d8507",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:12:03.174Z"
+    },
+    {
+      "nodeId": "3107010d-acc9-4cd4-ba9b-ffd322e0faf7",
+      "stepNumber": 3,
+      "worldStateSummary": {
+        "url": "https://github.com/",
+        "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 3",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T14:12:31.307Z"
+    }
+  ],
+  "edges": [
+    {
+      "id": "dc96d597-c2fe-4ba7-9613-fe9dad836c18",
+      "fromNodeId": "c10a4b69-d921-49a4-bee5-514408f078de",
+      "toNodeId": "1be8233f-c557-44e0-b386-65d7086d8507",
+      "action": {
+        "name": "type",
+        "params": {
+          "elementId": "8fc90b6e-5daf-4d4c-ac7b-53b905e42d6c",
+          "text": "browser-use",
+          "submit": true
+        }
+      },
+      "toolResult": {
+        "success": false,
+        "errorCode": "SEND_KEYS_FAILED"
+      },
+      "thought": "The search bar (labeled 'Search or jump to…') is visible. To proceed with the goal of searching for 'browser-use', I need to click the search bar to focus it or open it, and then type the search term.",
+      "confidence": 0.95,
+      "edgeType": "RECOVERY"
+    }
+  ]
+}

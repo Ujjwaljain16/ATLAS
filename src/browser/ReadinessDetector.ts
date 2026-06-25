@@ -10,12 +10,13 @@ export class ReadinessDetector {
       // Signal 1: Playwright networkidle
       const networkIdle = await this.waitForNetworkIdle(page, config.timeoutMs);
       
-      // Signal 2: Custom element probe
-      // Verify ≥1 input/textarea with an associated label exists in DOM
+      // Signal 2: requestAnimationFrame and DOM stability check
+      const isSettled = await this.waitForRenderSettlement(page);
+
+      // Signal 3: Custom element probe
       const elementProbe = await this.runElementProbe(page);
       
-      // BOTH must pass — this prevents acting on empty React SPA shells
-      return networkIdle && elementProbe;
+      return networkIdle && isSettled && elementProbe;
     } catch (e) {
       return false;
     }
@@ -23,7 +24,9 @@ export class ReadinessDetector {
 
   async checkReady(page: Page): Promise<boolean> {
     try {
-      return await this.runElementProbe(page);
+      const isSettled = await this.waitForRenderSettlement(page);
+      const elementProbe = await this.runElementProbe(page);
+      return isSettled && elementProbe;
     } catch (e) {
       return false;
     }
@@ -51,5 +54,42 @@ export class ReadinessDetector {
       }
       return false;
     });
+  }
+
+  /**
+   * Monitor requestAnimationFrame to ensure main thread is unblocked,
+   * then check if the total number of DOM nodes remains stable for 300ms.
+   */
+  private async waitForRenderSettlement(page: Page): Promise<boolean> {
+    try {
+      return await page.evaluate(async () => {
+        // 1. Wait for RAF twice to ensure painting is unblocked
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        
+        // 2. DOM Stability Check
+        return await new Promise<boolean>((resolve) => {
+          let lastCount = document.querySelectorAll('*').length;
+          let checkInterval: number;
+          let attempts = 0;
+          
+          checkInterval = window.setInterval(() => {
+            attempts++;
+            const currentCount = document.querySelectorAll('*').length;
+            if (currentCount === lastCount) {
+              window.clearInterval(checkInterval);
+              resolve(true); // Stable
+            } else {
+              lastCount = currentCount;
+              if (attempts > 10) { // Max wait 3 seconds
+                window.clearInterval(checkInterval);
+                resolve(false); // Unstable
+              }
+            }
+          }, 300);
+        });
+      });
+    } catch (e) {
+      return false;
+    }
   }
 }

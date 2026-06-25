@@ -16,6 +16,12 @@ export class BrowserController {
   // Element registry for locating by elementId
   private elementRegistry: Map<string, any> = new Map();
 
+  // V2 Browser State Tracking
+  private lastConsoleError: string | null = null;
+  private activeDialog: { type: string, message: string } | null = null;
+  private canGoBack: boolean = false;
+  private canGoForward: boolean = false;
+
   constructor() {
     this.readinessDetector = new ReadinessDetector();
     this.frameManager = new FrameManager();
@@ -33,6 +39,24 @@ export class BrowserController {
       });
       this.page = await this.context.newPage();
       this.frameManager.setPage(this.page);
+      
+      this.page.on('pageerror', (err) => {
+        this.lastConsoleError = err.message;
+      });
+      
+      this.page.on('console', (msg) => {
+        if (msg.type() === 'error') {
+          this.lastConsoleError = msg.text();
+        }
+      });
+      
+      this.page.on('dialog', async (dialog) => {
+        this.activeDialog = { type: dialog.type(), message: dialog.message() };
+        // We do not auto-dismiss here in V2 because the agent might want to interact with it,
+        // but if it blocks, it might be problematic. Let's dismiss by default after recording.
+        await dialog.dismiss();
+      });
+
       return { success: true };
     } catch (error: any) {
       return { success: false, error };
@@ -72,7 +96,10 @@ export class BrowserController {
   }
 
   async screenshot(label: string, fullPage: boolean): Promise<string> {
-    if (!this.page) throw new Error('Browser not launched');
+    if (!this.page) {
+      console.warn('[WARN] Cannot take screenshot: Browser not launched.');
+      return '';
+    }
     const safeLabel = label.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 50);
     const filename = `${Date.now()}_${safeLabel}.png`;
     const screenshotPath = path.join(process.cwd(), 'screenshots', filename);
@@ -138,7 +165,7 @@ export class BrowserController {
   registerElements(elements: any[]) {
     this.elementRegistry.clear();
     for (const el of elements) {
-      if (el.elementId) this.elementRegistry.set(el.elementId, el);
+      if (el.id) this.elementRegistry.set(el.id, el);
     }
   }
 
@@ -157,6 +184,18 @@ export class BrowserController {
     return target.locator(record.selector);
   }
 
+  async getElementState(elementId: string): Promise<{ visible: boolean; enabled: boolean; editable: boolean; focused: boolean }> {
+    if (!this.page) throw new Error('Browser not launched');
+    const locator = await this.locateElement(elementId);
+    
+    const visible = await locator.isVisible().catch(() => false);
+    const enabled = await locator.isEnabled().catch(() => false);
+    const editable = await locator.isEditable().catch(() => false);
+    const focused = await locator.evaluate((node: any) => document.activeElement === node).catch(() => false);
+
+    return { visible, enabled, editable, focused };
+  }
+
   async pressKey(key: string): Promise<void> {
     if (!this.page) throw new Error('Browser not launched');
     await this.page.keyboard.press(key);
@@ -171,4 +210,25 @@ export class BrowserController {
     if (!this.page) throw new Error('Browser not launched');
     return this.page;
   }
+  
+  getEnvironmentState() {
+    return {
+      lastConsoleError: this.lastConsoleError,
+      activeDialog: this.activeDialog,
+      openTabsCount: this.context ? this.context.pages().length : 0,
+      canGoBack: this.canGoBack,
+      canGoForward: this.canGoForward
+    };
+  }
+
+  public readonly pageOperations = {
+    scroll: async (direction: 'up' | 'down' | 'left' | 'right', amount: number = 500): Promise<void> => {
+      if (!this.page) throw new Error('Browser not launched');
+      const sign = direction === 'up' || direction === 'left' ? -1 : 1;
+      const x = direction === 'left' || direction === 'right' ? amount * sign : 0;
+      const y = direction === 'up' || direction === 'down' ? amount * sign : amount;
+      await this.page.mouse.wheel(x, y);
+      await this.page.waitForTimeout(400); // Give JS time to load items after scroll
+    }
+  };
 }

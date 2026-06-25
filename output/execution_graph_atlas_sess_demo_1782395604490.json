@@ -1,0 +1,52 @@
+{
+  "rootNodeId": "9f907b0d-11b4-4f1c-bb5a-2e84e7e828ab",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 2,
+  "edgeCount": 1,
+  "nodes": [
+    {
+      "nodeId": "9f907b0d-11b4-4f1c-bb5a-2e84e7e828ab",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+        "title": "Artificial intelligence - Wikipedia",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T13:53:46.356Z"
+    },
+    {
+      "nodeId": "23558eff-3b6d-47ad-b1f7-936b5209ad82",
+      "stepNumber": 2,
+      "worldStateSummary": {
+        "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+        "title": "Artificial intelligence - Wikipedia",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 2",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T13:53:55.526Z"
+    }
+  ],
+  "edges": [
+    {
+      "id": "947f5184-e683-428b-a3a5-6367ccab003a",
+      "fromNodeId": "9f907b0d-11b4-4f1c-bb5a-2e84e7e828ab",
+      "toNodeId": "23558eff-3b6d-47ad-b1f7-936b5209ad82",
+      "action": {
+        "name": "capability",
+        "params": {
+          "type": "continuous_scroll"
+        }
+      },
+      "toolResult": {
+        "success": false,
+        "errorCode": "SKILL_FAILED"
+      },
+      "thought": "The goal is to scroll to the bottom of the page. I have access to a 'continuous_scroll' capability which is designed specifically for this task.",
+      "confidence": 0.95,
+      "edgeType": "RECOVERY"
+    }
+  ]
+}

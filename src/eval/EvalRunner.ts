@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as yaml from 'yaml';
 import { runAgent } from '../index';
 import { TaskInputSchema, TaskInput } from '../cli/types';
-import { IntentPlanner } from '../cli/IntentPlanner';
+
 
 export interface EvalResult {
   testId: string;
@@ -48,8 +48,7 @@ export class EvalRunner {
       };
       
       try {
-        const planner = new IntentPlanner();
-        const goal = planner.plan(taskInput);
+        const goal = { label: taskInput.goal, targetUrl: taskInput.url, subObjectives: [] };
         
         const start = Date.now();
         const { result, metrics } = await runAgent(goal, `eval_${testDef.id}_${Date.now()}`, true, false);

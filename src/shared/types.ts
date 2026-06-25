@@ -1,29 +1,49 @@
-export interface RawElementRecord {
+export interface InteractiveElement {
+  id: string;          // Maps to what was elementId
+  role: string | null;
+  text: string;        // E.g., innerText or nearbyText
+  label: string | null;
+  ariaLabel: string | null;
+  placeholder: string | null;
+  href: string | null;
+  editable: boolean;
+  clickable: boolean;
+  enabled: boolean;
+  visible: boolean;
+  boundingBox: { x: number; y: number; width: number; height: number };
+  parent: string | null;
+  children: string[];
+  confidence?: number;
+  
+  // State
+  checked: boolean | null;
+  selected: boolean | null;
+  expanded: boolean | null;
+  focused: boolean;
+  readonly: boolean;
+
+  // Geometry
+  inViewport: boolean;
+  scrollOffset: { x: number; y: number };
+  zIndex: number;
+
+  // Context
+  shadowRoot: boolean;
+  parentGroup: string | null;
+
+  // Internal tracking fields
+  selector: string;
+  frameContext: string | null;
   tag: string;
   type: string | null;
-  id: string | null;
+  elementType: string; // V2 mapping: TEXTBOX | BUTTON | LINK | VIDEO | etc.
   name: string | null;
-  ariaLabel: string | null;
   ariaLabelledBy: string | null;
-  placeholder: string | null;
   value: string;
-  labelText: string | null;
-  nearbyText: string;
   hasAdjacentError: boolean;
-  visible: boolean;
-  disabled: boolean;
   required: boolean;
   ariaInvalid: string | null;
-  boundingBox: { x: number; y: number; width: number; height: number };
-  role: string | null;
   parentFormId: string | null;
-  selector: string;
-}
-
-export interface ElementRecord extends RawElementRecord {
-  elementId: string;
-  frameContext: string | null;
-  confirmedByA11y?: boolean;
 }
 
 export interface FormMetadata {

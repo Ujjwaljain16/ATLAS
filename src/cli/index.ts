@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
 import { TaskInputSchema, TaskInput } from './types';
-import { IntentPlanner } from './IntentPlanner';
+
 import { runAgent } from '../index';
 import { EvalRunner } from '../eval/EvalRunner';
 import { z } from 'zod';
@@ -11,37 +11,63 @@ import { z } from 'zod';
 const program = new Command();
 program.name('atlas').description('ATLAS Browser Agent CLI');
 
-function parseTaskFile(filePath: string): TaskInput {
-  const fullPath = path.resolve(process.cwd(), filePath);
-  if (!fs.existsSync(fullPath)) {
-    console.error(`Error: File not found at ${fullPath}`);
-    process.exit(1);
-  }
+function extractUrlFromGoal(goal: string): string {
+  // Match explicit http/https URLs
+  const explicitUrl = goal.match(/https?:\/\/[^\s,]+/);
+  if (explicitUrl) return explicitUrl[0];
   
-  const content = fs.readFileSync(fullPath, 'utf8');
-  let parsed: any;
+  // Match domain-like patterns e.g. github.com/ujjwaljain16, youtube.com
+  const domainMatch = goal.match(/\b([a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s,]*)?)\b/);
+  if (domainMatch) return 'https://' + domainMatch[1];
   
-  try {
-    if (fullPath.endsWith('.yaml') || fullPath.endsWith('.yml')) {
-      parsed = yaml.parse(content);
-    } else {
-      parsed = JSON.parse(content);
+  return '';
+}
+
+function parseGoalOrFile(input: string): TaskInput {
+  if (input.endsWith('.yaml') || input.endsWith('.yml') || input.endsWith('.json')) {
+    const fullPath = path.resolve(process.cwd(), input);
+    if (!fs.existsSync(fullPath)) {
+      console.error(`Error: File not found at ${fullPath}`);
+      process.exit(1);
     }
-  } catch (err: any) {
-    console.error(`Error parsing file: ${err.message}`);
-    process.exit(1);
-  }
-  
-  try {
-    return TaskInputSchema.parse(parsed);
-  } catch (err: unknown) {
-    if (err instanceof z.ZodError) {
-      console.error('Validation Error: Task definition does not match schema:');
-      console.error(JSON.stringify((err as any).errors, null, 2));
-    } else {
-      console.error('Validation Error:', err);
+    
+    const content = fs.readFileSync(fullPath, 'utf8');
+    let parsed: any;
+    
+    try {
+      if (fullPath.endsWith('.yaml') || fullPath.endsWith('.yml')) {
+        parsed = yaml.parse(content);
+      } else {
+        parsed = JSON.parse(content);
+      }
+    } catch (err: any) {
+      console.error(`Error parsing file: ${err.message}`);
+      process.exit(1);
     }
-    process.exit(1);
+    
+    try {
+      return TaskInputSchema.parse(parsed);
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        console.error('Validation Error: Task definition does not match schema:');
+        console.error(JSON.stringify((err as any).errors, null, 2));
+      } else {
+        console.error('Validation Error:', err);
+      }
+      process.exit(1);
+    }
+  } else {
+    // Natural language goal — extract URL automatically
+    const extractedUrl = extractUrlFromGoal(input);
+    if (extractedUrl) {
+      console.log(`[ATLAS] Detected URL from goal: ${extractedUrl}`);
+    } else {
+      console.log('[ATLAS] No URL detected in goal. Agent will navigate via reasoning.');
+    }
+    return {
+      goal: input,
+      url: extractedUrl || 'https://www.google.com' // fallback to google so planner can search
+    } as any;
   }
 }
 
@@ -49,31 +75,19 @@ program
   .command('validate <file>')
   .description('Validate a YAML/JSON task definition against the schema')
   .action((file) => {
-    parseTaskFile(file);
+    parseGoalOrFile(file);
     console.log('✓ Validation successful. Task definition is structurally sound.');
     process.exit(0);
   });
 
 program
-  .command('inspect <file>')
-  .description('Inspect the generated Goal tree for a task definition without executing it')
-  .action((file) => {
-    const input = parseTaskFile(file);
-    const planner = new IntentPlanner();
-    const goal = planner.plan(input);
-    console.log(JSON.stringify(goal, null, 2));
-    process.exit(0);
-  });
-
-program
-  .command('run <file>')
-  .description('Run the ATLAS agent against a task definition')
+  .command('run <input>')
+  .description('Run the ATLAS agent against a task definition or raw goal string')
   .option('--headless <boolean>', 'Run browser in headless mode', 'true')
   .option('--verbose', 'Enable verbose execution tracing', false)
-  .action(async (file, options) => {
-    const input = parseTaskFile(file);
-    const planner = new IntentPlanner();
-    const goal = planner.plan(input);
+  .action(async (input, options) => {
+    const parsedInput = parseGoalOrFile(input);
+    const goal = { label: parsedInput.goal, targetUrl: parsedInput.url, subObjectives: [] };
     
     console.log(`Executing Goal: ${goal.label}`);
     const headless = options.headless === 'true' || options.headless === true;
@@ -92,7 +106,7 @@ program
     process.exit(result.status === 'SUCCESS' ? 0 : 1);
   });
 
-// Expose parseTaskFile and run benchmark logic via export or separate command
+// Expose parseGoalOrFile and run benchmark logic via export or separate command
 // For benchmark, since the logic is complex, we can put it here or require scripts/benchmark.ts
 program
   .command('benchmark <file>')
@@ -100,9 +114,8 @@ program
   .option('-n, --runs <number>', 'Number of runs', '10')
   .option('--headless <boolean>', 'Run headless', 'true')
   .action(async (file, options) => {
-    const input = parseTaskFile(file);
-    const planner = new IntentPlanner();
-    const goal = planner.plan(input);
+    const parsedInput = parseGoalOrFile(file);
+    const goal = { label: parsedInput.goal, targetUrl: parsedInput.url, subObjectives: [] };
     const runs = parseInt(options.runs, 10);
     const headless = options.headless === 'true';
     

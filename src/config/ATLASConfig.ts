@@ -16,7 +16,11 @@ export const ATLASConfigSchema = z.object({
     allowedDomains: z.array(z.string()).default([]),
     strictDomainCheck: z.boolean().default(true),
   }),
+  memory: z.object({
+    contextWindowSize: z.number().default(10),
+  }).default({ contextWindowSize: 10 }),
   reasoning: z.object({
+    modelName: z.string().default('gemini-2.5-flash'),
     minConfidenceThreshold: z.number().default(0.40),
     highConfidenceThreshold: z.number().default(0.80),
     maxScrollCycles: z.number().default(3),
@@ -36,8 +40,8 @@ export const ATLASConfigSchema = z.object({
   screenshots: z.object({
     enabled: z.boolean().default(true),
     outputDir: z.string().default('./screenshots'),
-    onAction: z.boolean().default(true),
-    onFailure: z.boolean().default(true),
+    mode: z.enum(['all_steps', 'failures_only', 'first_and_last']).default('failures_only'),
+    fullPage: z.boolean().default(false), // V2.5: Viewport-only defaults to save disk
   }),
   logging: z.object({
     level: z.enum(['DEBUG', 'INFO', 'WARN', 'ERROR']).default('INFO'),

@@ -13,7 +13,9 @@ export class ATLASConfigLoader {
       navigation: {
         strictDomainCheck: process.env.ATLAS_STRICT_DOMAIN_CHECK !== 'false'
       },
-      reasoning: {},
+      reasoning: {
+        modelName: process.env.ATLAS_MODEL_NAME || 'gemini-2.5-flash',
+      },
       resilience: {},
       execution: {},
       screenshots: {},

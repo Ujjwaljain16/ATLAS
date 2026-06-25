@@ -1,0 +1,21 @@
+{
+  "rootNodeId": "7d357046-661f-4479-a7ae-aaff80304f75",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 1,
+  "edgeCount": 0,
+  "nodes": [
+    {
+      "nodeId": "7d357046-661f-4479-a7ae-aaff80304f75",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+        "title": "Artificial intelligence - Wikipedia",
+        "classification": "FORM_PAGE",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T12:58:21.466Z"
+    }
+  ],
+  "edges": []
+}

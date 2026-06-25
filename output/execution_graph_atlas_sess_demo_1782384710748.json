@@ -1,0 +1,21 @@
+{
+  "rootNodeId": "922040f4-7d2e-47d4-8389-415dcc4e7150",
+  "terminalStatus": "UNKNOWN",
+  "nodeCount": 1,
+  "edgeCount": 0,
+  "nodes": [
+    {
+      "nodeId": "922040f4-7d2e-47d4-8389-415dcc4e7150",
+      "stepNumber": 1,
+      "worldStateSummary": {
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "classification": "VIDEO_PLATFORM",
+        "goalProgress": "Step 1",
+        "errorSignals": []
+      },
+      "timestamp": "2026-06-25T10:51:58.470Z"
+    }
+  ],
+  "edges": []
+}
