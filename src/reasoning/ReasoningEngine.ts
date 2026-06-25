@@ -1,106 +1,90 @@
-import { WorldState } from '../worldmodel/types';
-import { SubObjective } from '../core/types';
+import { PageState } from '../worldmodel/types';
 import { ElementDiscovery } from './ElementDiscovery';
-import { IntentResolver } from './IntentResolver';
-import { ActionBuilder } from './ActionBuilder';
-import { ActiveFormSelector } from './ActiveFormSelector';
+import { PlannerProvider } from './PlannerProvider';
+import { GoalVerifier } from './GoalVerifier';
+import { ObservationCompressor } from '../perception/ObservationCompressor';
 
 export class ReasoningEngine {
-  private intentResolver = new IntentResolver();
-  private actionBuilder = new ActionBuilder();
-  private formSelector = new ActiveFormSelector();
+  private verifier: GoalVerifier;
+  private compressor: ObservationCompressor;
 
-  constructor(private elementDiscovery: ElementDiscovery) {}
+  constructor(
+    private elementDiscovery: ElementDiscovery,
+    private planner: PlannerProvider,
+    apiKey: string,
+    modelName: string = 'gemini-2.5-flash'
+  ) {
+    this.verifier = new GoalVerifier(apiKey, modelName);
+    this.compressor = new ObservationCompressor(25);
+  }
 
-  async decide(worldState: WorldState, memory: any, activeSubObjective: SubObjective, goalLabel?: string) {
-    // 1. Resolve Intent
-    const targetLabel = this.intentResolver.resolve(activeSubObjective);
+  async decide(
+    pageState: PageState, 
+    memory: any, 
+    goal: string, 
+    pageContext?: any, 
+    completedObjectives?: string[], 
+    stateDelta?: any,
+    availableCapabilities?: any[],
+    executionContextSummary?: any
+  ) {
+    // 1. Observation Compression — reduce to top 25 goal-relevant elements
+    const compressedElements = this.compressor.compress(pageState.elements, goal);
+    ObservationCompressor.report(pageState.elements.length, compressedElements.length);
 
-    // 2. Active Form Selection
-    const formCandidates = this.formSelector.rankForms(worldState.forms, activeSubObjective, goalLabel);
-    const activeForm = formCandidates.length > 0 ? formCandidates[0].formState : null;
+    // 2. Element Discovery (rank compressed candidates against the goal)
+    const candidates = this.elementDiscovery.discover(compressedElements, goal);
+
+    // 3. Retrieve self-reflection learning from last step (if any)
+    const lastLearning: string | null = memory.stm?.getLastLearning?.() ?? null;
+
+    // 4. LLM Task Planner — pass lastLearning for context-aware decisions
+    const previousActions = memory.execution ? memory.execution.getEntries() : [];
     
-    // 3. Element Discovery
-    // Only use fields from the active form (prevents cross-form bleed)
-    const fields = activeForm ? activeForm.fields : [];
-    
-    const mockElements = fields.map(f => ({
-      elementId: f.elementId!,
-      tag: f.tag,
-      type: f.type,
-      id: f.fieldId,
-      name: null,
-      ariaLabel: null,
-      ariaLabelledBy: null,
-      placeholder: null,
-      value: f.currentValue,
-      labelText: f.label,
-      nearbyText: '',
-      hasAdjacentError: false,
-      visible: true,
-      disabled: false,
-      required: f.required,
-      ariaInvalid: null,
-      boundingBox: { x: 0, y: 0, width: 0, height: 0 },
-      role: 'textbox',
-      parentFormId: activeForm ? activeForm.formId : null,
-      selector: f.selector,
-      frameContext: f.frameContext,
-    }));
+    const decision = await this.planner.planNextAction(
+      goal,
+      pageState,
+      candidates,
+      previousActions,
+      lastLearning,
+      pageContext,
+      completedObjectives,
+      stateDelta,
+      availableCapabilities,
+      memory.stm?.knowledge?.getSummary() || 'No knowledge acquired yet.',
+      executionContextSummary
+    );
 
-    const candidates = this.elementDiscovery.discover(mockElements, targetLabel);
-    
-    if (candidates.length === 0) {
+    // 5. Build candidateList for Decision Trace (top 5)
+    const candidateList = candidates.slice(0, 5).map(c => {
+      // UUID-free label hierarchy: name > label > ariaLabel > placeholder > text > role > type > [UUID]
+      const el = c.element;
+      const humanLabel = el.name || el.label || el.ariaLabel || el.placeholder ||
+        (el.text?.length ? el.text.substring(0, 20) : null) ||
+        el.role ||
+        el.elementType ||
+        '[UUID]';
       return {
-        thought: `No candidates found for ${targetLabel}`,
-        action: { name: 'none', params: {} },
-        confidence: 0,
-        discoveryTier: 9,
-        matchedSignal: 'none',
-        formCandidates
+        id: el.id,
+        label: humanLabel,
+        score: Math.round(c.confidence * 100) / 100,
+        type: el.elementType,
+        matchedSignal: c.matchedSignal || 'semantic_score',
       };
-    }
-
-    const topCandidate = candidates[0];
-
-    // 4. Build Action
-    const action = this.actionBuilder.build(topCandidate, activeSubObjective);
-
-    const alternatives = candidates.slice(0, 3).map(c => ({
-      elementId: c.element.elementId,
-      label: c.element.labelText || c.element.id || c.element.name || 'Unknown Element',
-      confidence: c.confidence
-    }));
+    });
 
     return {
-      thought: `Discovered element ${topCandidate.element.elementId} with ${topCandidate.confidence} confidence using ${topCandidate.tierName}`,
-      action,
-      confidence: topCandidate.confidence,
-      discoveryTier: topCandidate.discoveryTier,
-      matchedSignal: topCandidate.matchedSignal,
-      targetSelector: topCandidate.element.selector,
-      targetLabel: topCandidate.element.labelText || topCandidate.element.id || topCandidate.element.name || 'Unknown Element',
-      alternatives,
-      formCandidates
+      ...decision,
+      candidateList,
+      formCandidates: [] // Legacy field
     };
   }
 
-  evaluateCompletion(before: WorldState, after: WorldState, obj: SubObjective, targetSelector?: string): 'COMPLETE' | 'FAILED' | 'PENDING' {
-    if (!targetSelector) return 'PENDING';
-
-    const fieldsAfter = after.forms.flatMap(f => f.fields);
-    const targetField = fieldsAfter.find(f => f.selector === targetSelector);
-    
-    if (!targetField) return 'PENDING';
-
-    const expectedValue = obj.expectedValue;
-    if (expectedValue !== undefined) {
-      if (targetField.currentValue === expectedValue) return 'COMPLETE';
-    } else {
-      if (targetField.currentValue) return 'COMPLETE';
-    }
-
+  async evaluateCompletion(before: PageState, after: PageState, goalText: string, action: any): Promise<'COMPLETE' | 'FAILED' | 'PENDING'> {
+    if (action?.name === 'complete') return 'COMPLETE';
+    const verification = await this.verifier.verify(goalText, after);
+    if (verification.status === 'COMPLETE') return 'COMPLETE';
+    if (verification.status === 'FAILED') return 'FAILED';
     return 'PENDING';
   }
 }
-
