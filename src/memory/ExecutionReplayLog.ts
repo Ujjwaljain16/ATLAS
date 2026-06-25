@@ -10,7 +10,7 @@ export type ReplayEntry =
 export class ExecutionReplayLog {
   private log: ReplayEntry[] = [];
   
-  constructor(private sessionId: string) {}
+  constructor(private sessionId: string = 'unknown_session') {}
 
   append(entry: ReplayEntry) {
     this.log.push(entry);

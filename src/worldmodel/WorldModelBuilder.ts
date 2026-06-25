@@ -1,69 +1,38 @@
 import { v4 as uuid } from 'uuid';
 import { Observation } from '../perception/types';
-import { WorldState, FormState, FieldState } from './types';
-import { FormDiscovery } from './FormDiscovery';
-import { FieldStatusEvaluator } from './FieldStatusEvaluator';
-import { ProgressCalculator } from './ProgressCalculator';
+import { PageState, Section } from './types';
+import { PageContextAnalyzer } from './PageContextAnalyzer';
+import { SemanticExtractor } from './SemanticExtractor';
 
 export class WorldModelBuilder {
-  private formDiscovery = new FormDiscovery();
-  private statusEvaluator = new FieldStatusEvaluator();
-  private progressCalculator = new ProgressCalculator();
+  private contextAnalyzer = new PageContextAnalyzer();
+  private semanticExtractor = new SemanticExtractor();
 
-  // REFINEMENT R1: Accepts active sub-objective as input
-  build(observation: Observation, activeSubObjective: string): WorldState {
-    const forms = this.formDiscovery.discoverForms(observation);
-    const fields: FieldState[] = [];
-    
-    for (const form of forms) {
-      const formFields = this.classifyFields(form, observation);
-      form.fields = formFields;
-      fields.push(...formFields);
-    }
-    
-    const goalProgress = this.progressCalculator.calculateProgress(fields, activeSubObjective);
-    
-    return {
-      pageId: uuid(),
-      timestamp: new Date().toISOString(),
+  build(observation: Observation, navigationHistory: string[] = []): PageState {
+    const pageState: PageState = {
+      pageId: `state_${Date.now()}`,
+      timestamp: observation.timestamp,
       url: observation.url,
       title: observation.title,
       ready: observation.readiness,
-      activeSubObjective,
-      forms,
-      subObjectiveStatus: this.statusEvaluator.evaluateSubObjectives(fields),
-      goalProgress,
+      
+      sections: [], // Can be populated with heuristics later
+      elements: observation.elementInventory,
+      focusId: null, // Active element ID (can be extracted via DOM extraction)
+      openDialogs: [], // Dialog IDs
+      navigationHistory,
+      
       errorSignals: observation.errorSignals,
       pageMetadata: observation.metadata,
+      semanticObjects: [], // Will be populated immediately below
+      
+      classification: observation.classification,
+      environment: observation.environment,
     };
-  }
 
-  private classifyFields(form: FormState, obs: Observation): FieldState[] {
-    // If implicit global form, we process all inputs without a parentFormId
-    const targetElements = form.formId === 'implicit_global_context' 
-      ? obs.elementInventory.filter(el => !el.parentFormId)
-      : obs.elementInventory.filter(el => el.parentFormId === form.formId);
+    const context = this.contextAnalyzer.analyze(pageState);
+    pageState.semanticObjects = this.semanticExtractor.extract(pageState, context);
 
-    return targetElements
-      // CRITICAL: scope to THIS form ONLY — without this filter, on pages with
-      // multiple forms every form receives every input from every other form,
-      // producing completely wrong field topology and duplicate element IDs.
-      .filter(el => ['input', 'textarea', 'select'].includes(el.tag))
-      .filter(el => el.visible && !el.disabled)
-      .map(el => ({
-        fieldId: uuid(),
-        label: el.labelText,
-        type: el.tag === 'textarea' ? 'textarea' : (el.type || 'text'),
-        tag: el.tag,
-        status: this.statusEvaluator.evaluateStatus(el),
-        currentValue: el.value,
-        required: el.required,
-        confidence: 0, // Filled by Reasoning Engine
-        discoveryTier: 0,
-        frameContext: el.frameContext || null,
-        ariaInvalid: el.ariaInvalid === 'true',
-        elementId: el.elementId,
-        selector: el.selector,
-      }));
+    return pageState;
   }
 }

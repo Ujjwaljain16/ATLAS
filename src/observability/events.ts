@@ -10,7 +10,8 @@ export type ATLASEvent = EventCorrelation & (
   | { type: 'NavigationComplete';    url: string; loadTimeMs: number; ready: boolean }
   | { type: 'ObservationReady';      observationId: string; elementCount: number }
   | { type: 'WorldModelBuilt';       worldStateId: string; formCount: number; fieldCount: number }
-  | { type: 'DecisionMade';          thought: string; action: string; confidence: number; discoveryTier: number; matchedSignal: string }
+  | { type: 'DecisionMade'; thought: string; action: string; confidence: number; discoveryTier: number; matchedSignal: string; expectedOutcome?: string; goalStatusGuess?: string; candidateList?: Array<{ id: string; label: string; score: number; type: string }> }
+  | { type: 'TaskPlanReady'; intent: string; steps: number; summary: string; navigationTarget: string }
   | { type: 'ActionExecuted';        tool: string; success: boolean; durationMs: number }
   | { type: 'SubObjectiveComplete';  subObjective: string }
   | { type: 'FailureDetected';       severity: string; source: string; code: string }

@@ -1,12 +1,9 @@
-import { FieldState } from './types';
+import { InteractiveElement } from '../shared/types';
 
 export class ProgressCalculator {
-  calculateProgress(fields: FieldState[], activeSubObjective: string): number {
-    if (fields.length === 0) return 0;
-    
-    // In the future, this can be weighted by activeSubObjective. 
-    // For now, it calculates the raw percentage of filled fields.
-    const filled = fields.filter(f => f.status === 'FILLED').length;
-    return filled / fields.length;
+  calculateProgress(elements: InteractiveElement[], activeGoal: string): number {
+    // For V2 LLM Planner, progress is harder to deterministically calculate without form topologies.
+    // For now, we will return 0 or rely on the LLM to signal progress.
+    return 0;
   }
 }
